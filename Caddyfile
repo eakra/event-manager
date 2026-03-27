@@ -1,0 +1,21 @@
+booking.evgenyk.dev {
+    # Enable GZIP and ZSTD compression for better performance
+    encode gzip zstd
+
+    # --- Proxy API Requests to Backend ---
+    handle /api/* {
+        # 'backend' is the docker-compose service name
+        reverse_proxy backend:8080
+    }
+
+    # --- Serve React Frontend ---
+    handle {
+        root * /srv/frontend
+        
+        # Enable Caddy's static file server
+        file_server
+        
+        # If the requested file isn't found, serve index.html (React Router fix)
+        try_files {path} /index.html
+    }
+}

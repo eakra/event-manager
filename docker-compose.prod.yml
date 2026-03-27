@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  caddy:
+    # Uses the image pushed by Cloud Build
+    image: ${IMAGE_PREFIX}-caddy:${IMAGE_TAG:-latest}
+    container_name: booking-caddy
+    restart: always
+    ports:
+      - "80:80"      # HTTP traffic (Caddy automatically redirects to HTTPS)
+      - "443:443"    # HTTPS traffic
+    volumes:
+      - caddy_data:/data      # REQUIRED for Let's Encrypt certificates to persist!
+      - caddy_config:/config  # REQUIRED for Caddy state
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: booking-db-prod
+    restart: always
+    environment:
+      POSTGRES_DB: booking_app
+      POSTGRES_USER: ${DB_USER:-booking_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-CHANGE_ME_IN_PRODUCTION}
+    volumes:
+      - pgdata_prod:/var/lib/postgresql/data
+
+  backend:
+    # Uses the image pushed by Cloud Build
+    image: ${IMAGE_PREFIX}-backend:${IMAGE_TAG:-latest}
+    container_name: booking-backend-prod
+    restart: always
+    environment:
+      # Inject DB credentials
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres:5432/booking_app
+      QUARKUS_DATASOURCE_USERNAME: ${DB_USER:-booking_user}
+      QUARKUS_DATASOURCE_PASSWORD: ${DB_PASSWORD:-CHANGE_ME_IN_PRODUCTION}
+      
+      # Accept cross-origin requests from our production domain
+      QUARKUS_HTTP_CORS_ORIGINS: "https://booking.evgenyk.dev"
+      
+      # JWT Keys (Pass these in securely via the .env file or build metadata)
+      # SMALLRYE_JWT_SIGN_KEY_LOCATION: /path/to/prod/key
+      
+      # Mailer settings
+      QUARKUS_MAILER_MOCK: "false"
+      # QUARKUS_MAILER_HOST: smtp.gmail.com
+      # QUARKUS_MAILER_PORT: 587
+      # QUARKUS_MAILER_USERNAME: your-email
+      # QUARKUS_MAILER_PASSWORD: your-app-password
+      
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata_prod:
+  caddy_data:     # Persistent volume for Caddy certificates
+  caddy_config:   # Persistent volume for Caddy configuration

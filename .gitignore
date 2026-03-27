@@ -1,0 +1,21 @@
+# Backend
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Keys (do NOT commit in production)
+# backend/src/main/resources/privateKey.pem

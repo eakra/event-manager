@@ -1,0 +1,74 @@
+steps:
+  # 1. Build the Backend Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-backend:${SHORT_SHA}'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-backend:latest'
+      - '-f'
+      - 'backend/Dockerfile.prod'
+      - 'backend'
+
+  # 2. Build the Frontend + Caddy Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-caddy:${SHORT_SHA}'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-caddy:latest'
+      - '-f'
+      - 'Dockerfile.caddy'
+      - '.'
+
+  # 3. Push Both Images to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - '--all-tags'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-backend'
+      
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - '--all-tags'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-caddy'
+
+  # 4. Deploy to the GCP VM
+  # NOTE: The default Cloud Build service account requires the 'Compute Instance Admin (v1)' 
+  # and 'IAP-secured Tunnel User' roles to use gcloud compute ssh.
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Securely copy the production compose file to the VM
+        gcloud compute scp docker-compose.prod.yml ${_VM_USER}@${_VM_NAME}:~/ --zone=${_VM_ZONE} --tunnel-through-iap
+        
+        # Connect to the VM and trigger the update
+        gcloud compute ssh ${_VM_USER}@${_VM_NAME} --zone=${_VM_ZONE} --tunnel-through-iap --command="
+          export IMAGE_PREFIX=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}
+          export IMAGE_TAG=${SHORT_SHA}
+          
+          # Pull the exact images built in this pipeline run
+          docker-compose -f docker-compose.prod.yml pull
+          
+          # Restart the modified containers in the background
+          docker-compose -f docker-compose.prod.yml up -d
+          
+          # Clean up old images to prevent disk space issues on the VM
+          docker image prune -f
+        "
+
+substitutions:
+  # Provide your specific GCP Region, Registry Name, and VM details here:
+  _REGION: 'europe-west2'               # Artifact Registry region (e.g., us-central1)
+  _REPO_NAME: 'booking-repo'            # Name of your Docker repo in Artifact Registry
+  _VM_NAME: 'booking-vm'                # Exact name of your Compute Engine instance
+  _VM_ZONE: 'europe-west2-a'            # Zone where your VM lives
+  _VM_USER: 'deployer'                  # Username to ssh into the VM with
+
+options:
+  logging: CLOUD_LOGGING_ONLY
