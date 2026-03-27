@@ -5,13 +5,11 @@ WORKDIR /build
 
 # Copy the pom.xml and download dependencies (for caching)
 COPY pom.xml .
-COPY .mvn .mvn
-COPY mvnw .
-RUN ./mvnw dependency:go-offline
+RUN mvn dependency:go-offline
 
 # Copy the source code and build the Uber-JAR
 COPY src src
-RUN ./mvnw package -DskipTests -Dquarkus.package.type=uber-jar
+RUN mvn package -DskipTests -Dquarkus.package.type=uber-jar
 
 # Stage 2: Runtime Image
 FROM eclipse-temurin:17-jre-alpine
