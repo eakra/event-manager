@@ -58,8 +58,9 @@ steps:
           # Restart the modified containers in the background
           docker-compose -f docker-compose.prod.yml up -d
           
-          # Clean up old images to prevent disk space issues on the VM
-          docker image prune -f
+          # SECURE CLEANUP (Protects 10GB disk)
+          # Removes old images, stopped containers, and cache older than 24 hours
+          docker system prune -af --filter "until=24h" || true
         "
 
 substitutions:

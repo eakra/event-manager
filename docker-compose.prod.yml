@@ -14,6 +14,11 @@ services:
       - caddy_config:/config  # REQUIRED for Caddy state
     depends_on:
       - backend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   postgres:
     image: postgres:16-alpine
@@ -25,6 +30,11 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-CHANGE_ME_IN_PRODUCTION}
     volumes:
       - pgdata_prod:/var/lib/postgresql/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   backend:
     # Uses the image pushed by Cloud Build
@@ -52,6 +62,11 @@ services:
       
     depends_on:
       - postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   pgdata_prod:
