@@ -54,14 +54,14 @@ steps:
           export IMAGE_TAG=${SHORT_SHA}
           
           # Pull the exact images built in this pipeline run
-          sudo docker compose -f docker-compose.prod.yml pull
+          sudo -E docker compose -f docker-compose.prod.yml pull
           
           # Restart the modified containers in the background
-          sudo docker compose -f docker-compose.prod.yml up -d
+          sudo -E docker compose -f docker-compose.prod.yml up -d
           
           # SECURE CLEANUP (Protects 10GB disk)
           # Removes old images, stopped containers, and cache older than 24 hours
-          sudo docker system prune -af --filter \"until=24h\" || true
+          sudo -E docker system prune -af --filter \"until=24h\" || true
         "
 
 substitutions:
