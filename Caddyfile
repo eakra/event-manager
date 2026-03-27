@@ -1,4 +1,4 @@
-booking.evgenyk.dev {
+:80, booking.evgenyk.dev {
     # Enable GZIP and ZSTD compression for better performance
     encode gzip zstd
 
