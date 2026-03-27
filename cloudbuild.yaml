@@ -49,6 +49,7 @@ steps:
         
         # Connect to the VM and trigger the update
         gcloud compute ssh ${_VM_USER}@${_VM_NAME} --zone=${_VM_ZONE} --command="
+          set -e
           export IMAGE_PREFIX=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}
           export IMAGE_TAG=${SHORT_SHA}
           
