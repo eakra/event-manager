@@ -4,9 +4,9 @@ steps:
     args: 
       - 'build'
       - '-t'
-      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-backend:${SHORT_SHA}'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/backend:${SHORT_SHA}'
       - '-t'
-      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-backend:latest'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/backend:latest'
       - '-f'
       - 'backend/Dockerfile.prod'
       - 'backend'
@@ -16,9 +16,9 @@ steps:
     args: 
       - 'build'
       - '-t'
-      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-caddy:${SHORT_SHA}'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/caddy:${SHORT_SHA}'
       - '-t'
-      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-caddy:latest'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/caddy:latest'
       - '-f'
       - 'Dockerfile.caddy'
       - '.'
@@ -28,13 +28,13 @@ steps:
     args: 
       - 'push'
       - '--all-tags'
-      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-backend'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/backend'
       
   - name: 'gcr.io/cloud-builders/docker'
     args: 
       - 'push'
       - '--all-tags'
-      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/booking-caddy'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/caddy'
 
   # 4. Deploy to the GCP VM
   # NOTE: The default Cloud Build service account requires the 'Compute Instance Admin (v1)' 
@@ -52,6 +52,9 @@ steps:
           set -e
           export IMAGE_PREFIX=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}
           export IMAGE_TAG=${SHORT_SHA}
+          
+          # Authenticate Docker on the VM to pull from Artifact Registry
+          gcloud auth configure-docker ${_REGION}-docker.pkg.dev --quiet
           
           # Pull the exact images built in this pipeline run
           sudo -E docker compose -f docker-compose.prod.yml pull

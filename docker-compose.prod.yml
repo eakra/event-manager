@@ -3,7 +3,7 @@
 services:
   caddy:
     # Uses the image pushed by Cloud Build
-    image: ${IMAGE_PREFIX}-caddy:${IMAGE_TAG:-latest}
+    image: ${IMAGE_PREFIX}/caddy:${IMAGE_TAG:-latest}
     container_name: booking-caddy
     restart: always
     ports:
@@ -38,7 +38,7 @@ services:
 
   backend:
     # Uses the image pushed by Cloud Build
-    image: ${IMAGE_PREFIX}-backend:${IMAGE_TAG:-latest}
+    image: ${IMAGE_PREFIX}/backend:${IMAGE_TAG:-latest}
     container_name: booking-backend-prod
     restart: always
     environment:
