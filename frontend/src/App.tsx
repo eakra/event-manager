@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme';
@@ -20,7 +20,7 @@ import ProfilePage from './pages/staff/ProfilePage';
 import RegisterPage from './pages/RegisterPage';
 import ParticipantsPage from './pages/admin/ParticipantsPage';
 import ParticipantEventsPage from './pages/participant/ParticipantEventsPage';
-import ParticipantProfilePage from './pages/participant/ParticipantProfilePage';
+
 import EventOverviewPage from './pages/shared/EventOverviewPage';
 
 export default function App() {
@@ -72,7 +72,7 @@ export default function App() {
             <Route element={<ProtectedRoute requiredRole="PARTICIPANT" />}>
               <Route element={<AppLayout />}>
                 <Route path="/participant/events" element={<ParticipantEventsPage />} />
-                <Route path="/participant/profile" element={<ParticipantProfilePage />} />
+
               </Route>
             </Route>
 

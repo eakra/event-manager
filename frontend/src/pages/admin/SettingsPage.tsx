@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
-  Box, Typography, Card, Button, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, IconButton, Tooltip,
+  Box, Typography, Card, Button,
   Dialog, DialogTitle, DialogContent, DialogActions, TextField,
   CircularProgress, Alert, Chip, alpha, useTheme,
 } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { Add as AddIcon } from '@mui/icons-material';
 import { tagsApi } from '../../services/api';
 
 export default function SettingsPage() {

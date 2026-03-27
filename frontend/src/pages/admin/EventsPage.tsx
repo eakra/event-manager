@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   Box, Typography, Button, ToggleButton, ToggleButtonGroup, Card,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Chip, IconButton, Tooltip, CircularProgress, Alert, alpha, useTheme, Stack, Avatar
+  Chip, IconButton, Tooltip, CircularProgress, Alert, alpha, useTheme, Stack
 } from '@mui/material';
 import {
   Add as AddIcon, ViewList as ListIcon, CalendarMonth as CalendarIcon,
@@ -122,8 +122,8 @@ const CustomToolbar = (toolbar: any) => {
 
 // Custom Event Component
 const CustomEvent = ({ event }: any) => {
-  const theme = useTheme();
-  const color = STATUS_COLORS[event.resource.status] || theme.palette.primary.main;
+
+
 
   return (
     <Tooltip title={`${event.title} - ${event.resource.locationName}`}>

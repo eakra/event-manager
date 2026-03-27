@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box, Typography, Card, CardContent, Button, Chip, CircularProgress,
   Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Tooltip, alpha, useTheme, Divider, Paper,
+  Tooltip, alpha, useTheme,
 } from '@mui/material';
 import {
   CheckCircle as MatchIcon, Warning as WarnIcon,
