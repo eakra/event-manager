@@ -45,22 +45,22 @@ steps:
       - '-c'
       - |
         # Securely copy the production compose file to the VM
-        gcloud compute scp docker-compose.prod.yml ${_VM_NAME}:~/ --zone=${_VM_ZONE}
+        gcloud compute scp docker-compose.prod.yml ${_VM_USER}@${_VM_NAME}:~/ --zone=${_VM_ZONE}
         
         # Connect to the VM and trigger the update
-        gcloud compute ssh ${_VM_NAME} --zone=${_VM_ZONE} --command="
+        gcloud compute ssh ${_VM_USER}@${_VM_NAME} --zone=${_VM_ZONE} --command="
           export IMAGE_PREFIX=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}
           export IMAGE_TAG=${SHORT_SHA}
           
           # Pull the exact images built in this pipeline run
-          docker-compose -f docker-compose.prod.yml pull
+          sudo docker-compose -f docker-compose.prod.yml pull
           
           # Restart the modified containers in the background
-          docker-compose -f docker-compose.prod.yml up -d
+          sudo docker-compose -f docker-compose.prod.yml up -d
           
           # SECURE CLEANUP (Protects 10GB disk)
           # Removes old images, stopped containers, and cache older than 24 hours
-          docker system prune -af --filter \"until=24h\" || true
+          sudo docker system prune -af --filter \"until=24h\" || true
         "
 
 substitutions:
@@ -69,6 +69,7 @@ substitutions:
   _REPO_NAME: 'event-manager-repo'            # Name of your Docker repo in Artifact Registry
   _VM_NAME: 'event-manager-vm'                # Exact name of your Compute Engine instance
   _VM_ZONE: 'us-central1-c'            # Zone where your VM lives
+  _VM_USER: 'deployer'                 # Username to ssh into the VM with
 
 options:
   logging: CLOUD_LOGGING_ONLY
