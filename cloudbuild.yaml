@@ -64,12 +64,12 @@ steps:
 
 substitutions:
   # Provide your specific GCP Region, Registry Name, and VM details here:
-  _REGION: 'europe-west2'               # Artifact Registry region (e.g., us-central1)
-  _REPO_NAME: 'booking-repo'            # Name of your Docker repo in Artifact Registry
-  _VM_NAME: 'booking-vm'                # Exact name of your Compute Engine instance
-  _VM_ZONE: 'europe-west2-a'            # Zone where your VM lives
-  _VM_USER: 'deployer'                  # Username to ssh into the VM with
+  _REGION: 'us-central1'               # Artifact Registry region (e.g., us-central1)
+  _REPO_NAME: 'event-manager-repo'            # Name of your Docker repo in Artifact Registry
+  _VM_NAME: 'event-manager-vm'                # Exact name of your Compute Engine instance
+  _VM_ZONE: 'us-central1-c'            # Zone where your VM lives
+  _VM_USER: '885546982428-compute'                  # Username to ssh into the VM with
 
 options:
   logging: CLOUD_LOGGING_ONLY
-  
+
