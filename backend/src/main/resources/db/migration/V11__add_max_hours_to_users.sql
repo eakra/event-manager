@@ -1,1 +1,0 @@
-ALTER TABLE users ADD COLUMN max_hours_per_week INT NOT NULL DEFAULT 40;
