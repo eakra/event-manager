@@ -4,6 +4,7 @@ import com.booking.dto.NotifyStaffRequest;
 import com.booking.entity.*;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
+import jakarta.transaction.Transactional;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
