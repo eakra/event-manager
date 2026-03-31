@@ -15,8 +15,13 @@ public class EventInstanceCreateRequest {
     @NotNull
     public LocalDate eventDate;
 
+    public LocalTime shiftStartTime;
+
     @NotNull
-    public LocalTime startTime;
+    public LocalTime eventStartTime;
+
+    public Integer shiftDurationMinutes;
+    public Integer eventDurationMinutes;
 
     public String status; // optional, defaults to DRAFT
 

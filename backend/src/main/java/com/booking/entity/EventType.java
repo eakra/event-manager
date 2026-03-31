@@ -15,8 +15,11 @@ public class EventType extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     public String description;
 
-    @Column(name = "duration_minutes", nullable = false)
-    public Integer durationMinutes;
+    @Column(name = "event_duration_minutes", nullable = false)
+    public Integer eventDurationMinutes;
+
+    @Column(name = "shift_duration_minutes", nullable = false)
+    public Integer shiftDurationMinutes = 60;
 
     @Column(name = "min_staff", nullable = false)
     public Integer minStaff = 1;

@@ -21,7 +21,8 @@ public class EventTypeResource {
     public static class EventTypeRequest {
         public String name;
         public String description;
-        public Integer durationMinutes;
+        public Integer shiftDurationMinutes;
+        public Integer eventDurationMinutes;
         public Set<Long> requiredTagIds;
     }
 
@@ -44,7 +45,8 @@ public class EventTypeResource {
         EventType et = new EventType();
         et.name = request.name;
         et.description = request.description;
-        et.durationMinutes = request.durationMinutes;
+        et.shiftDurationMinutes = request.shiftDurationMinutes != null ? request.shiftDurationMinutes : 60;
+        et.eventDurationMinutes = request.eventDurationMinutes;
         et.requiredTags = resolveTagIds(request.requiredTagIds);
         et.persist();
         return Response.created(URI.create("/api/event-types/" + et.id)).entity(et).build();
@@ -58,7 +60,8 @@ public class EventTypeResource {
         if (et == null) throw new NotFoundException("EventType not found");
         et.name = request.name;
         et.description = request.description;
-        et.durationMinutes = request.durationMinutes;
+        if (request.shiftDurationMinutes != null) et.shiftDurationMinutes = request.shiftDurationMinutes;
+        if (request.eventDurationMinutes != null) et.eventDurationMinutes = request.eventDurationMinutes;
         et.requiredTags = resolveTagIds(request.requiredTagIds);
         return et;
     }

@@ -38,7 +38,7 @@ public class CommunicationsResource {
 
         // Get all assignments for the week
         List<EventAssignment> assignments = EventAssignment.list(
-            "eventInstance.eventDate >= ?1 AND eventInstance.eventDate <= ?2 ORDER BY eventInstance.eventDate, eventInstance.startTime",
+            "eventInstance.eventDate >= ?1 AND eventInstance.eventDate <= ?2 ORDER BY eventInstance.eventDate, eventInstance.eventStartTime",
             weekStart, weekEnd);
 
         // Group by staff member
@@ -61,8 +61,10 @@ public class CommunicationsResource {
                 EventInstance ei = a.eventInstance;
                 body.append("• ").append(ei.eventType.name).append("\n");
                 body.append("  Date: ").append(ei.eventDate.format(dateFmt)).append("\n");
-                body.append("  Time: ").append(ei.startTime.format(timeFmt))
-                    .append(" - ").append(ei.getEndTime().format(timeFmt)).append("\n");
+                body.append("  Shift Time: ").append(ei.shiftStartTime.format(timeFmt))
+                    .append(" - ").append(ei.getShiftEndTime().format(timeFmt)).append("\n");
+                body.append("  Event Time: ").append(ei.eventStartTime.format(timeFmt))
+                    .append(" - ").append(ei.getEventEndTime().format(timeFmt)).append("\n");
                 body.append("  Location: ").append(ei.location.name).append("\n");
                 if (ei.location.addressLine1 != null) {
                     body.append("  Address: ").append(ei.location.addressLine1);

@@ -146,7 +146,7 @@ public class StaffResource {
         LocalDate toDate = to != null ? LocalDate.parse(to) : fromDate.plusMonths(3);
 
         List<EventAssignment> assignments = EventAssignment.list(
-            "user.id = ?1 AND eventInstance.eventDate >= ?2 AND eventInstance.eventDate <= ?3 ORDER BY eventInstance.eventDate, eventInstance.startTime",
+            "user.id = ?1 AND eventInstance.eventDate >= ?2 AND eventInstance.eventDate <= ?3 ORDER BY eventInstance.eventDate, eventInstance.eventStartTime",
             id, fromDate, toDate);
 
         return assignments.stream().map(a -> {
@@ -159,8 +159,12 @@ public class StaffResource {
             dto.locationId = ei.location.id;
             dto.locationName = ei.location.name;
             dto.eventDate = ei.eventDate;
-            dto.startTime = ei.startTime;
-            dto.endTime = ei.getEndTime();
+            dto.shiftStartTime = ei.shiftStartTime;
+            dto.eventStartTime = ei.eventStartTime;
+            dto.shiftEndTime = ei.getShiftEndTime();
+            dto.eventEndTime = ei.getEventEndTime();
+            dto.shiftDurationMinutes = ei.getEffectiveShiftDuration();
+            dto.eventDurationMinutes = ei.getEffectiveEventDuration();
             dto.status = ei.status;
             dto.effectiveMinStaff = ei.getEffectiveMinStaff();
             dto.effectiveMaxStaff = ei.getEffectiveMaxStaff();

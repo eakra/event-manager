@@ -30,7 +30,7 @@ public class ParticipantPortalResource {
     @GET
     @Path("/events")
     public List<EventInstanceDTO> getEvents() {
-        return EventInstance.<EventInstance>list("status = ?1 ORDER BY eventDate, startTime", EventStatus.PUBLISHED)
+        return EventInstance.<EventInstance>list("status = ?1 ORDER BY eventDate, eventStartTime", EventStatus.PUBLISHED)
                 .stream().map(this::toEventDTO).collect(Collectors.toList());
     }
 
@@ -117,7 +117,8 @@ public class ParticipantPortalResource {
         dto.id = ei.id;
         dto.eventTypeId = ei.eventType.id;
         dto.eventTypeName = ei.eventType.name;
-        dto.durationMinutes = ei.eventType.durationMinutes;
+        dto.eventDurationMinutes = ei.getEffectiveEventDuration();
+        dto.shiftDurationMinutes = ei.getEffectiveShiftDuration();
         dto.locationId = ei.location.id;
         dto.locationName = ei.location.name;
         dto.addressLine1 = ei.location.addressLine1;
@@ -128,8 +129,10 @@ public class ParticipantPortalResource {
         dto.contactPhone = ei.location.contactPhone;
         dto.contactEmail = ei.location.contactEmail;
         dto.eventDate = ei.eventDate;
-        dto.startTime = ei.startTime;
-        dto.endTime = ei.getEndTime();
+        dto.shiftStartTime = ei.shiftStartTime;
+        dto.eventStartTime = ei.eventStartTime;
+        dto.shiftEndTime = ei.getShiftEndTime();
+        dto.eventEndTime = ei.getEventEndTime();
         dto.status = ei.status;
         dto.capacityOverride = ei.capacityOverride;
         dto.minStaff = ei.minStaff;

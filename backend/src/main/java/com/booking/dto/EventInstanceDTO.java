@@ -13,8 +13,12 @@ public class EventInstanceDTO {
     public Long locationId;
     public String locationName;
     public LocalDate eventDate;
-    public LocalTime startTime;
-    public LocalTime endTime;
+    public LocalTime shiftStartTime;
+    public LocalTime eventStartTime;
+    public LocalTime shiftEndTime;
+    public LocalTime eventEndTime;
+    public Integer shiftDurationMinutes;
+    public Integer eventDurationMinutes;
     public EventStatus status;
     public String description;
     public Integer capacityOverride;

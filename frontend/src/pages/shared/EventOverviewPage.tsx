@@ -189,12 +189,22 @@ export default function EventOverviewPage() {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
                   <Stack direction="row" spacing={1.5} alignItems="center">
-                    <Avatar sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1), color: 'secondary.main', width: 40, height: 40 }}>
+                    <Box>
+                      <Typography variant="caption" color="text.secondary">Shift Starts</Typography>
+                      <Typography variant="body2" fontWeight={700}>{event.shiftStartTime?.slice(0, 5)}</Typography>
+                    </Box>
+                  </Stack>
+                </Grid>
+                <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+                  <Stack direction="row" spacing={1.5} alignItems="center">
+                    <Avatar sx={{ bgcolor: alpha(theme.palette.primary.main, 0.15), color: 'primary.main', width: 40, height: 40 }}>
                       <TimeIcon fontSize="small" />
                     </Avatar>
                     <Box>
-                      <Typography variant="caption" color="text.secondary">Starts</Typography>
-                      <Typography variant="body2" fontWeight={700}>{event.startTime.slice(0, 5)}</Typography>
+                      <Typography variant="caption" color="text.secondary">Event Runs</Typography>
+                      <Typography variant="body2" fontWeight={700} color="primary.main">
+                        {event.eventStartTime?.slice(0, 5)} – {event.eventEndTime?.slice(0, 5)}
+                      </Typography>
                     </Box>
                   </Stack>
                 </Grid>
@@ -204,8 +214,10 @@ export default function EventOverviewPage() {
                       <TimeIcon fontSize="small" />
                     </Avatar>
                     <Box>
-                      <Typography variant="caption" color="text.secondary">Duration</Typography>
-                      <Typography variant="body2" fontWeight={700}>{event.durationMinutes} mins</Typography>
+                      <Typography variant="caption" color="text.secondary">Durations</Typography>
+                      <Typography variant="body2" fontWeight={700}>
+                        Shift: {event.shiftDurationMinutes}m / Event: {event.eventDurationMinutes}m
+                      </Typography>
                     </Box>
                   </Stack>
                 </Grid>

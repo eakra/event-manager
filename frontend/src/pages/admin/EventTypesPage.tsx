@@ -16,7 +16,7 @@ export default function EventTypesPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [form, setForm] = useState({ 
-    name: '', description: '', durationMinutes: 60, requiredTagIds: [] as number[],
+    name: '', description: '', shiftDurationMinutes: 60, eventDurationMinutes: 60, requiredTagIds: [] as number[],
     minStaff: 1, maxStaff: 2, maxParticipants: 20, minAge: 10, maxAge: 18
   });
   const theme = useTheme();
@@ -39,7 +39,8 @@ export default function EventTypesPage() {
       setForm({
         name: et.name,
         description: et.description || '',
-        durationMinutes: et.durationMinutes,
+        shiftDurationMinutes: et.shiftDurationMinutes || 60,
+        eventDurationMinutes: et.eventDurationMinutes,
         requiredTagIds: et.requiredTags?.map((t: any) => t.id) || [],
         minStaff: et.minStaff || 1,
         maxStaff: et.maxStaff || 2,
@@ -49,7 +50,7 @@ export default function EventTypesPage() {
       });
     } else {
       setEditing(null);
-      setForm({ name: '', description: '', durationMinutes: 60, requiredTagIds: [], minStaff: 1, maxStaff: 2, maxParticipants: 20, minAge: 10, maxAge: 18 });
+      setForm({ name: '', description: '', shiftDurationMinutes: 60, eventDurationMinutes: 60, requiredTagIds: [], minStaff: 1, maxStaff: 2, maxParticipants: 20, minAge: 10, maxAge: 18 });
     }
     setDialogOpen(true);
   };
@@ -100,7 +101,8 @@ export default function EventTypesPage() {
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>Duration</TableCell>
+                <TableCell>Shift Duration</TableCell>
+                <TableCell>Event Duration</TableCell>
                 <TableCell>Staff (Min/Max)</TableCell>
                 <TableCell>Participants (Max)</TableCell>
                 <TableCell>Age Range</TableCell>
@@ -117,7 +119,8 @@ export default function EventTypesPage() {
                       {et.description}
                     </Typography>
                   </TableCell>
-                  <TableCell>{et.durationMinutes} min</TableCell>
+                  <TableCell>{et.shiftDurationMinutes} min</TableCell>
+                  <TableCell>{et.eventDurationMinutes} min</TableCell>
                   <TableCell>{et.minStaff} - {et.maxStaff}</TableCell>
                   <TableCell>{et.maxParticipants}</TableCell>
                   <TableCell>{et.minAge} - {et.maxAge}</TableCell>
@@ -147,9 +150,10 @@ export default function EventTypesPage() {
           <TextField label="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} fullWidth multiline rows={2} />
           
           <Box sx={{ display: 'flex', gap: 2 }}>
-            <TextField label="Duration (min)" type="number" value={form.durationMinutes} onChange={(e) => setForm({ ...form, durationMinutes: Number(e.target.value) })} fullWidth />
-            <TextField label="Max Participants" type="number" value={form.maxParticipants} onChange={(e) => setForm({ ...form, maxParticipants: Number(e.target.value) })} fullWidth />
+            <TextField label="Shift Duration (min)" type="number" value={form.shiftDurationMinutes} onChange={(e) => setForm({ ...form, shiftDurationMinutes: Number(e.target.value) })} fullWidth />
+            <TextField label="Event Duration (min)" type="number" value={form.eventDurationMinutes} onChange={(e) => setForm({ ...form, eventDurationMinutes: Number(e.target.value) })} fullWidth />
           </Box>
+          <TextField label="Max Participants" type="number" value={form.maxParticipants} onChange={(e) => setForm({ ...form, maxParticipants: Number(e.target.value) })} fullWidth />
           
           <Box sx={{ display: 'flex', gap: 2 }}>
             <TextField label="Min Staff" type="number" value={form.minStaff} onChange={(e) => setForm({ ...form, minStaff: Number(e.target.value) })} fullWidth />

@@ -38,10 +38,13 @@ interface EventInstanceData {
   eventTypeName: string;
   locationName: string;
   eventDate: string;
-  startTime: string;
-  endTime: string;
+  shiftStartTime: string;
+  eventStartTime: string;
+  shiftEndTime: string;
+  eventEndTime: string;
   status: string;
-  durationMinutes: number;
+  shiftDurationMinutes: number;
+  eventDurationMinutes: number;
   description: string;
   assignedStaff: { id: number; name: string }[];
 }
@@ -202,8 +205,8 @@ export default function EventsPage() {
   const calendarEvents = events.map((e) => ({
     id: e.id,
     title: e.eventTypeName,
-    start: new Date(`${e.eventDate}T${e.startTime}`),
-    end: new Date(`${e.eventDate}T${e.endTime}`),
+    start: new Date(`${e.eventDate}T${e.shiftStartTime}`),
+    end: new Date(`${e.eventDate}T${e.shiftEndTime}`),
     resource: e,
   }));
 
@@ -285,7 +288,8 @@ export default function EventsPage() {
                 <TableRow sx={{ bgcolor: alpha(theme.palette.background.paper, 0.5) }}>
                   <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Event Type</TableCell>
                   <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Date</TableCell>
-                  <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Time</TableCell>
+                  <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Shift Time</TableCell>
+                  <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Event Time</TableCell>
                   <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Location</TableCell>
                   <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</TableCell>
                   <TableCell sx={{ fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Staff</TableCell>
@@ -315,7 +319,10 @@ export default function EventsPage() {
                       <Typography variant="body2" fontWeight={500}>{format(new Date(eventInstance.eventDate), 'EEE, d MMM yyyy')}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="body2" color="text.secondary">{eventInstance.startTime?.slice(0, 5)} – {eventInstance.endTime?.slice(0, 5)}</Typography>
+                      <Typography variant="body2" color="text.secondary">{eventInstance.shiftStartTime?.slice(0, 5)} – {eventInstance.shiftEndTime?.slice(0, 5)}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2" fontWeight={600} color="primary.main">{eventInstance.eventStartTime?.slice(0, 5)} – {eventInstance.eventEndTime?.slice(0, 5)}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2" fontWeight={500}>{eventInstance.locationName}</Typography>

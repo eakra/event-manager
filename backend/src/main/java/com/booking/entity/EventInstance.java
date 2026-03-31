@@ -22,8 +22,17 @@ public class EventInstance extends BaseEntity {
     @Column(name = "event_date", nullable = false)
     public LocalDate eventDate;
 
-    @Column(name = "start_time", nullable = false)
-    public LocalTime startTime;
+    @Column(name = "shift_start_time")
+    public LocalTime shiftStartTime;
+
+    @Column(name = "event_start_time", nullable = false)
+    public LocalTime eventStartTime;
+
+    @Column(name = "shift_duration_minutes")
+    public Integer shiftDurationMinutes;
+
+    @Column(name = "event_duration_minutes")
+    public Integer eventDurationMinutes;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -57,13 +66,47 @@ public class EventInstance extends BaseEntity {
     public List<EventRegistration> registrations = new ArrayList<>();
 
     /**
-     * Calculates the end time based on the event type's duration.
+     * Calculates the event end time based on override or template duration.
      */
-    public LocalTime getEndTime() {
-        if (eventType != null && eventType.durationMinutes != null) {
-            return startTime.plusMinutes(eventType.durationMinutes);
+    public LocalTime getEventEndTime() {
+        Integer duration = getEffectiveEventDuration();
+        return eventStartTime != null ? eventStartTime.plusMinutes(duration) : null;
+    }
+
+    /**
+     * Calculates the shift end time based on override or template duration.
+     */
+    public LocalTime getShiftEndTime() {
+        Integer duration = getEffectiveShiftDuration();
+        return shiftStartTime != null ? shiftStartTime.plusMinutes(duration) : null;
+    }
+
+    public Integer getEffectiveEventDuration() {
+        if (eventDurationMinutes != null) return eventDurationMinutes;
+        return eventType != null ? eventType.eventDurationMinutes : 60;
+    }
+
+    public Integer getEffectiveShiftDuration() {
+        if (shiftDurationMinutes != null) return shiftDurationMinutes;
+        return eventType != null ? eventType.shiftDurationMinutes : 60;
+    }
+
+    /**
+     * Validates that the event time is fully encompassed within the shift time.
+     * @throws IllegalArgumentException if validation fails
+     */
+    public void validateTimings() {
+        if (shiftStartTime == null || eventStartTime == null) return;
+
+        LocalTime eventEndTime = getEventEndTime();
+        LocalTime shiftEndTime = getShiftEndTime();
+
+        if (eventStartTime.isBefore(shiftStartTime)) {
+            throw new IllegalArgumentException("Event start time cannot be before shift start time");
         }
-        return startTime;
+        if (eventEndTime != null && shiftEndTime != null && eventEndTime.isAfter(shiftEndTime)) {
+            throw new IllegalArgumentException("Event end time cannot be after shift end time");
+        }
     }
 
     public Integer getEffectiveMinStaff() {

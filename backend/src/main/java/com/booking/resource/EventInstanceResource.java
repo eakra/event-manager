@@ -34,11 +34,11 @@ public class EventInstanceResource {
         List<EventInstance> instances;
         if (from != null && to != null) {
             instances = EventInstance.list(
-                "eventDate >= ?1 AND eventDate <= ?2 ORDER BY eventDate, startTime",
+                "eventDate >= ?1 AND eventDate <= ?2 ORDER BY eventDate, eventStartTime",
                 java.time.LocalDate.parse(from),
                 java.time.LocalDate.parse(to));
         } else {
-            instances = EventInstance.list("ORDER BY eventDate, startTime");
+            instances = EventInstance.list("ORDER BY eventDate, eventStartTime");
         }
 
         if (status != null) {
@@ -74,7 +74,10 @@ public class EventInstanceResource {
         ei.eventType = eventType;
         ei.location = location;
         ei.eventDate = request.eventDate;
-        ei.startTime = request.startTime;
+        ei.shiftStartTime = request.shiftStartTime != null ? request.shiftStartTime : request.eventStartTime;
+        ei.eventStartTime = request.eventStartTime;
+        ei.shiftDurationMinutes = request.shiftDurationMinutes;
+        ei.eventDurationMinutes = request.eventDurationMinutes;
         ei.status = EventStatus.DRAFT;
         ei.capacityOverride = request.capacityOverride;
         ei.minStaff = request.minStaff;
@@ -83,6 +86,8 @@ public class EventInstanceResource {
         ei.minAge = request.minAge;
         ei.maxAge = request.maxAge;
         ei.description = request.description;
+        
+        ei.validateTimings();
         ei.persist();
         return Response.created(URI.create("/api/event-instances/" + ei.id)).entity(toDTO(ei)).build();
     }
@@ -104,7 +109,10 @@ public class EventInstanceResource {
         ei.eventType = eventType;
         ei.location = location;
         ei.eventDate = request.eventDate;
-        ei.startTime = request.startTime;
+        ei.shiftStartTime = request.shiftStartTime != null ? request.shiftStartTime : request.eventStartTime;
+        ei.eventStartTime = request.eventStartTime;
+        ei.shiftDurationMinutes = request.shiftDurationMinutes;
+        ei.eventDurationMinutes = request.eventDurationMinutes;
         ei.capacityOverride = request.capacityOverride;
         ei.minStaff = request.minStaff;
         ei.maxStaff = request.maxStaff;
@@ -112,6 +120,8 @@ public class EventInstanceResource {
         ei.minAge = request.minAge;
         ei.maxAge = request.maxAge;
         ei.description = request.description;
+        
+        ei.validateTimings();
         return toDTO(ei);
     }
 
@@ -231,12 +241,15 @@ public class EventInstanceResource {
         dto.id = ei.id;
         dto.eventTypeId = ei.eventType.id;
         dto.eventTypeName = ei.eventType.name;
-        dto.durationMinutes = ei.eventType.durationMinutes;
+        dto.eventDurationMinutes = ei.getEffectiveEventDuration();
+        dto.shiftDurationMinutes = ei.getEffectiveShiftDuration();
         dto.locationId = ei.location.id;
         dto.locationName = ei.location.name;
         dto.eventDate = ei.eventDate;
-        dto.startTime = ei.startTime;
-        dto.endTime = ei.getEndTime();
+        dto.shiftStartTime = ei.shiftStartTime;
+        dto.eventStartTime = ei.eventStartTime;
+        dto.shiftEndTime = ei.getShiftEndTime();
+        dto.eventEndTime = ei.getEventEndTime();
         dto.status = ei.status;
         dto.capacityOverride = ei.capacityOverride;
         dto.description = ei.description;

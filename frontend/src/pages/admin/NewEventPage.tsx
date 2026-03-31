@@ -19,7 +19,10 @@ export default function NewEventPage() {
     eventTypeId: '',
     locationId: '',
     eventDate: '',
-    startTime: '',
+    shiftStartTime: '',
+    eventStartTime: '',
+    shiftDurationMinutes: '',
+    eventDurationMinutes: '',
     status: 'DRAFT',
     minStaff: '',
     maxStaff: '',
@@ -50,7 +53,10 @@ export default function NewEventPage() {
         eventTypeId: Number(form.eventTypeId),
         locationId: Number(form.locationId),
         eventDate: form.eventDate,
-        startTime: form.startTime,
+        shiftStartTime: form.shiftStartTime || form.eventStartTime,
+        eventStartTime: form.eventStartTime,
+        shiftDurationMinutes: form.shiftDurationMinutes ? Number(form.shiftDurationMinutes) : null,
+        eventDurationMinutes: form.eventDurationMinutes ? Number(form.eventDurationMinutes) : null,
         status: form.status,
         minStaff: form.minStaff ? Number(form.minStaff) : null,
         maxStaff: form.maxStaff ? Number(form.maxStaff) : null,
@@ -71,7 +77,7 @@ export default function NewEventPage() {
     switch (activeStep) {
       case 0: return !!form.eventTypeId;
       case 1: return !!form.locationId;
-      case 2: return !!form.eventDate && !!form.startTime;
+      case 2: return !!form.eventDate && !!form.eventStartTime;
       default: return true;
     }
   };
@@ -109,7 +115,7 @@ export default function NewEventPage() {
             >
               {eventTypes.map((et) => (
                 <MenuItem key={et.id} value={et.id}>
-                  {et.name} ({et.durationMinutes} min)
+                  {et.name} (Shift: {et.shiftDurationMinutes}m, Event: {et.eventDurationMinutes}m)
                 </MenuItem>
               ))}
             </TextField>
@@ -145,17 +151,35 @@ export default function NewEventPage() {
                   sx={{ flex: 1, minWidth: 200 }}
                 />
                 <TextField
-                  id="event-time-input"
-                  label="Start Time"
+                  id="event-shift-time-input"
+                  label="Shift Start"
                   type="time"
                   InputLabelProps={{ shrink: true }}
-                  value={form.startTime}
-                  onChange={(e) => setForm({ ...form, startTime: e.target.value })}
+                  value={form.shiftStartTime || form.eventStartTime}
+                  onChange={(e) => setForm({ ...form, shiftStartTime: e.target.value })}
+                  sx={{ flex: 1, minWidth: 200 }}
+                  placeholder="e.g. 14:00"
+                />
+                <TextField
+                  id="event-time-input"
+                  label="Event Start"
+                  type="time"
+                  InputLabelProps={{ shrink: true }}
+                  value={form.eventStartTime}
+                  onChange={(e) => setForm({ ...form, eventStartTime: e.target.value })}
                   sx={{ flex: 1, minWidth: 200 }}
                 />
               </Box>
             
-            <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 3, mb: 2 }}>
+            <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 3, mb: 1 }}>
+              Timing Overrides (Optional)
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 2 }}>
+              <TextField label="Shift Duration (min)" type="number" value={form.shiftDurationMinutes} onChange={(e) => setForm({ ...form, shiftDurationMinutes: e.target.value })} sx={{ flex: 1 }} placeholder={selectedType?.shiftDurationMinutes?.toString()} />
+              <TextField label="Event Duration (min)" type="number" value={form.eventDurationMinutes} onChange={(e) => setForm({ ...form, eventDurationMinutes: e.target.value })} sx={{ flex: 1 }} placeholder={selectedType?.eventDurationMinutes?.toString()} />
+            </Box>
+
+            <Typography variant="subtitle1" fontWeight={600} sx={{ mt: 1, mb: 2 }}>
               Rule Overrides (Optional)
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -193,13 +217,18 @@ export default function NewEventPage() {
                 <Typography>Type:</Typography>
                 <Typography>{selectedType?.name}</Typography>
                 <Typography>Duration:</Typography>
-                <Typography>{selectedType?.durationMinutes} minutes</Typography>
+                <Typography>
+                  Shift: {form.shiftDurationMinutes || selectedType?.shiftDurationMinutes}m, 
+                  Event: {form.eventDurationMinutes || selectedType?.eventDurationMinutes}m
+                </Typography>
                 <Typography>Location:</Typography>
                 <Typography>{selectedLocation?.name}</Typography>
                 <Typography>Date:</Typography>
                 <Typography>{form.eventDate}</Typography>
-                <Typography>Start Time:</Typography>
-                <Typography>{form.startTime}</Typography>
+                <Typography>Shift Start:</Typography>
+                <Typography>{form.shiftStartTime || form.eventStartTime}</Typography>
+                <Typography>Event Start:</Typography>
+                <Typography>{form.eventStartTime}</Typography>
                 <Typography>Overrides:</Typography>
                 <Typography>
                   {form.minStaff || form.maxStaff || form.maxParticipants || form.minAge || form.maxAge 

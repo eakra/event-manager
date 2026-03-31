@@ -23,8 +23,8 @@ public class AssignmentEngine {
         // Load event details
         EventType eventType = eventInstance.eventType;
         LocalDate eventDate = eventInstance.eventDate;
-        LocalTime eventStart = eventInstance.startTime;
-        LocalTime eventEnd = eventInstance.getEndTime();
+        LocalTime shiftStart = eventInstance.shiftStartTime;
+        LocalTime shiftEnd = eventInstance.getShiftEndTime();
         int eventDayOfWeek = eventDate.getDayOfWeek().getValue(); // 1=Mon..7=Sun
 
         // Get required tags
@@ -63,7 +63,7 @@ public class AssignmentEngine {
             boolean withinAvailableHours = false;
             for (UserAvailability av : staff.availability) {
                 if (av.dayOfWeek == eventDayOfWeek) {
-                    if (!eventStart.isBefore(av.startTime) && !eventEnd.isAfter(av.endTime)) {
+                    if (shiftStart != null && !shiftStart.isBefore(av.startTime) && shiftEnd != null && !shiftEnd.isAfter(av.endTime)) {
                         withinAvailableHours = true;
                         break;
                     }
@@ -76,8 +76,8 @@ public class AssignmentEngine {
             // --- Check 3: Weekly hour capacity ---
             double currentWeekHours = calculateWeekHours(staff.id, weekStart, weekEnd);
             dto.currentWeekHours = currentWeekHours;
-            double eventHours = eventType.durationMinutes / 60.0;
-            if (currentWeekHours + eventHours > staff.maxHoursPerWeek) {
+            double shiftHours = eventInstance.getEffectiveShiftDuration() / 60.0;
+            if (currentWeekHours + shiftHours > staff.maxHoursPerWeek) {
                 dto.warningMessages.add("Exceeds weekly hour limit");
             }
 
@@ -91,11 +91,12 @@ public class AssignmentEngine {
                 // Skip the current event
                 if (other.id.equals(eventInstance.id)) continue;
 
-                LocalTime otherStart = other.startTime;
-                LocalTime otherEnd = other.getEndTime();
+                LocalTime otherShiftStart = other.shiftStartTime;
+                LocalTime otherShiftEnd = other.getShiftEndTime();
 
                 // Check for time overlap
-                if (eventStart.isBefore(otherEnd) && eventEnd.isAfter(otherStart)) {
+                if (shiftStart != null && otherShiftEnd != null && shiftStart.isBefore(otherShiftEnd) && 
+                    shiftEnd != null && otherShiftStart != null && shiftEnd.isAfter(otherShiftStart)) {
                     dto.warningMessages.add("Scheduling conflict with " + other.eventType.name);
                 }
             }
@@ -133,7 +134,7 @@ public class AssignmentEngine {
             staffId, weekStart, weekEnd);
 
         return assignments.stream()
-                .mapToDouble(a -> a.eventInstance.eventType.durationMinutes / 60.0)
+                .mapToDouble(a -> a.eventInstance.getEffectiveShiftDuration() / 60.0)
                 .sum();
     }
 }
