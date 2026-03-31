@@ -270,7 +270,7 @@ public class StaffResource {
         if (user == null) throw new NotFoundException("Staff not found");
 
         return user.holidays.stream()
-                .map(h -> new StaffDTO.HolidayDTO(h.id, h.startDate.toString(), h.endDate.toString()))
+                .map(h -> new StaffDTO.HolidayDTO(h.id, h.startDate.toString(), h.endDate.toString(), h.status.name()))
                 .collect(Collectors.toList());
     }
 
@@ -292,11 +292,15 @@ public class StaffResource {
         holiday.user = user;
         holiday.startDate = LocalDate.parse(request.startDate);
         holiday.endDate = LocalDate.parse(request.endDate);
+        holiday.status = UserHoliday.HolidayStatus.PENDING;
         holiday.persist();
         
         user.holidays.add(holiday);
 
-        return Response.status(Response.Status.CREATED).entity(new StaffDTO.HolidayDTO(holiday.id, holiday.startDate.toString(), holiday.endDate.toString())).build();
+        // TODO: Send notification to admins
+        System.out.println("NOTIFICATION: Staff " + user.name + " (" + user.email + ") requested holiday from " + holiday.startDate + " to " + holiday.endDate);
+
+        return Response.status(Response.Status.CREATED).entity(new StaffDTO.HolidayDTO(holiday.id, holiday.startDate.toString(), holiday.endDate.toString(), holiday.status.name())).build();
     }
 
     @DELETE
@@ -337,7 +341,7 @@ public class StaffResource {
                 .map(a -> new StaffDTO.AvailabilityDTO(a.id, a.dayOfWeek, a.startTime.toString(), a.endTime.toString()))
                 .collect(Collectors.toList());
         dto.holidays = user.holidays.stream()
-                .map(h -> new StaffDTO.HolidayDTO(h.id, h.startDate.toString(), h.endDate.toString()))
+                .map(h -> new StaffDTO.HolidayDTO(h.id, h.startDate.toString(), h.endDate.toString(), h.status.name()))
                 .collect(Collectors.toList());
         return dto;
     }

@@ -7,6 +7,10 @@ import java.time.LocalDate;
 @Table(name = "user_holidays")
 public class UserHoliday extends BaseEntity {
 
+    public enum HolidayStatus {
+        PENDING, APPROVED, REJECTED
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     public User user;
@@ -16,4 +20,8 @@ public class UserHoliday extends BaseEntity {
 
     @Column(name = "end_date", nullable = false)
     public LocalDate endDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    public HolidayStatus status = HolidayStatus.PENDING;
 }

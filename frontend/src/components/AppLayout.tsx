@@ -31,11 +31,8 @@ const adminMenuItems = [
 
 const staffMenuItems = [
   { text: 'Events Calendar', icon: <EventIcon />, path: '/staff/events' },
-  { text: 'Event Types', icon: <EventTypeIcon />, path: '/staff/event-types' },
   { text: 'My Schedule', icon: <CalendarIcon />, path: '/staff/schedule' },
   { text: 'My Profile', icon: <PersonIcon />, path: '/staff/profile' },
-  { text: 'Participants', icon: <PersonIcon />, path: '/staff/participants' },
-  { text: 'Locations', icon: <LocationIcon />, path: '/staff/locations' },
 ];
 
 const participantMenuItems = [

@@ -48,13 +48,15 @@ public class StaffDTO {
         public Long id;
         public String startDate;
         public String endDate;
+        public String status;
 
         public HolidayDTO() {}
 
-        public HolidayDTO(Long id, String startDate, String endDate) {
+        public HolidayDTO(Long id, String startDate, String endDate, String status) {
             this.id = id;
             this.startDate = startDate;
             this.endDate = endDate;
+            this.status = status;
         }
     }
 }
