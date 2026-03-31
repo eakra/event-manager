@@ -17,6 +17,7 @@ import {
   Person as PersonIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
+import NotificationMenu from './NotificationMenu';
 
 const DRAWER_WIDTH = 260;
 
@@ -174,23 +175,31 @@ export default function AppLayout() {
         position="fixed"
         elevation={0}
         sx={{
-          display: { md: 'none' },
+          width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
+          ml: { md: `${DRAWER_WIDTH}px` },
           bgcolor: alpha(theme.palette.background.default, 0.8),
           backdropFilter: 'blur(20px)',
           borderBottom: '1px solid rgba(0,0,0,0.08)',
+          zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
-        <Toolbar>
-          <IconButton
-            edge="start"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            sx={{ color: 'text.primary' }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" fontWeight={700} sx={{ ml: 1 }}>
-            Event Staffing
-          </Typography>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton
+              edge="start"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              sx={{ color: 'text.primary', display: { md: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" fontWeight={700} sx={{ ml: { xs: 1, md: 0 }, color: 'text.primary' }}>
+              {menuItems.find(item => location.pathname.startsWith(item.path))?.text || 'Event Staffing'}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ color: 'text.primary' }}>
+            <NotificationMenu />
+          </Box>
         </Toolbar>
       </AppBar>
 

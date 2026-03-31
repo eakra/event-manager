@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { authApi } from '../services/api';
 
 interface UserInfo {
+  id: number;
   name: string;
   email: string;
   role: string;
@@ -40,6 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const response = await authApi.login(email, password);
     const data = response.data;
     const userInfo: UserInfo = {
+      id: data.id,
       name: data.name,
       email: data.email,
       role: data.role,

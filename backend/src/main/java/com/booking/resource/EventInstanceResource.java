@@ -199,9 +199,76 @@ public class EventInstanceResource {
         EventAssignment assignment = new EventAssignment();
         assignment.eventInstance = ei;
         assignment.user = staff;
+        assignment.status = EventAssignment.AssignmentStatus.PENDING;
         assignment.persist();
 
+        // Create notification for staff
+        Notification n = new Notification();
+        n.recipient = staff;
+        n.type = Notification.NotificationType.ASSIGNMENT_REQUEST;
+        n.relatedId = ei.id;
+        n.message = "You have been assigned to " + ei.eventType.name + " on " + ei.eventDate;
+        n.persist();
+
         return Response.ok(toDTO(ei)).build();
+    }
+
+    /**
+     * Staff approves an assignment.
+     */
+    @POST
+    @Path("/{id}/assignments/approve")
+    @Transactional
+    @RolesAllowed({"ADMIN", "STAFF"})
+    public Response approveAssignment(@PathParam("id") Long id) {
+        User caller = User.findByEmail(jwt.getName());
+        if (caller == null) throw new NotAuthorizedException("Bearer");
+
+        EventAssignment assignment = EventAssignment.find("eventInstance.id = ?1 AND user.id = ?2", id, caller.id).firstResult();
+        if (assignment == null) throw new NotFoundException("Assignment not found");
+
+        assignment.status = EventAssignment.AssignmentStatus.APPROVED;
+
+        // Mark assignment notification as read
+        Notification.update("isRead = true where recipient.id = ?1 and relatedId = ?2 and type = 'ASSIGNMENT_REQUEST'",
+                caller.id, id);
+
+        return Response.ok().build();
+    }
+
+    /**
+     * Staff declines an assignment.
+     */
+    @POST
+    @Path("/{id}/assignments/decline")
+    @Transactional
+    @RolesAllowed({"ADMIN", "STAFF"})
+    public Response declineAssignment(@PathParam("id") Long id, Map<String, String> request) {
+        User caller = User.findByEmail(jwt.getName());
+        if (caller == null) throw new NotAuthorizedException("Bearer");
+
+        String reason = request.get("reason");
+        if (reason == null || reason.isBlank()) {
+            throw new BadRequestException("Decline reason is mandatory");
+        }
+
+        EventAssignment assignment = EventAssignment.find("eventInstance.id = ?1 AND user.id = ?2", id, caller.id).firstResult();
+        if (assignment == null) throw new NotFoundException("Assignment not found");
+
+        EventInstance ei = assignment.eventInstance;
+
+        // Create notification for admins before deleting
+        Notification.notifyAdmins(Notification.NotificationType.ASSIGNMENT_DECLINED, ei.id,
+                caller.name + " declined " + ei.eventType.name + " on " + ei.eventDate + ". Reason: " + reason);
+
+        // Automatically unassign
+        assignment.delete();
+
+        // Mark assignment notification as read
+        Notification.update("isRead = true where recipient.id = ?1 and relatedId = ?2 and type = 'ASSIGNMENT_REQUEST'",
+                caller.id, id);
+
+        return Response.noContent().build();
     }
 
     /**

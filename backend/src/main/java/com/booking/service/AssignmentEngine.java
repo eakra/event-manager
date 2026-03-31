@@ -104,7 +104,7 @@ public class AssignmentEngine {
 
             // --- Check 5: Holidays ---
             for (UserHoliday holiday : staff.holidays) {
-                if (!eventDate.isBefore(holiday.startDate) && !eventDate.isAfter(holiday.endDate)) {
+                if (holiday.status == UserHoliday.HolidayStatus.APPROVED && !eventDate.isBefore(holiday.startDate) && !eventDate.isAfter(holiday.endDate)) {
                     dto.onHoliday = true;
                     dto.warningMessages.add("On holiday");
                     dto.canAssign = false;

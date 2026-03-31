@@ -297,8 +297,9 @@ public class StaffResource {
         
         user.holidays.add(holiday);
 
-        // TODO: Send notification to admins
-        System.out.println("NOTIFICATION: Staff " + user.name + " (" + user.email + ") requested holiday from " + holiday.startDate + " to " + holiday.endDate);
+        // Notify admins
+        Notification.notifyAdmins(Notification.NotificationType.HOLIDAY_REQUEST, holiday.id,
+                user.name + " (" + user.email + ") requested holiday from " + holiday.startDate + " to " + holiday.endDate);
 
         return Response.status(Response.Status.CREATED).entity(new StaffDTO.HolidayDTO(holiday.id, holiday.startDate.toString(), holiday.endDate.toString(), holiday.status.name())).build();
     }
@@ -323,6 +324,38 @@ public class StaffResource {
         }
 
         return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/{id}/holidays/{holidayId}/approve")
+    @RolesAllowed("ADMIN")
+    @Transactional
+    public Response approveHoliday(@PathParam("id") Long id, @PathParam("holidayId") Long holidayId) {
+        UserHoliday holiday = UserHoliday.findById(holidayId);
+        if (holiday == null) throw new NotFoundException("Holiday not found");
+
+        holiday.status = UserHoliday.HolidayStatus.APPROVED;
+
+        // Mark holiday notification as read
+        Notification.update("isRead = true where relatedId = ?1 and type = 'HOLIDAY_REQUEST'", holidayId);
+
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/{id}/holidays/{holidayId}/decline")
+    @RolesAllowed("ADMIN")
+    @Transactional
+    public Response declineHoliday(@PathParam("id") Long id, @PathParam("holidayId") Long holidayId) {
+        UserHoliday holiday = UserHoliday.findById(holidayId);
+        if (holiday == null) throw new NotFoundException("Holiday not found");
+
+        holiday.status = UserHoliday.HolidayStatus.REJECTED;
+
+        // Mark holiday notification as read
+        Notification.update("isRead = true where relatedId = ?1 and type = 'HOLIDAY_REQUEST'", holidayId);
+
+        return Response.ok().build();
     }
 
     private StaffDTO toDTO(User user) {
