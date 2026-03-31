@@ -26,8 +26,11 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 20)
     public UserRole role = UserRole.STAFF;
 
-    @Column(name = "max_hours_per_week", nullable = false)
-    public Integer maxHoursPerWeek = 40;
+    @Column(name = "typical_hours_per_week", nullable = false)
+    public Integer typicalHoursPerWeek = 21;
+
+    @Column(name = "phone_number", length = 20)
+    public String phoneNumber;
 
     @Column(name = "date_of_birth")
     public java.time.LocalDate dateOfBirth;

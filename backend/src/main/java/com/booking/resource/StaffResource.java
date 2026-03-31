@@ -60,7 +60,9 @@ public class StaffResource {
         user.email = request.email;
         user.passwordHash = BCrypt.hashpw(request.password, BCrypt.gensalt());
         user.role = UserRole.STAFF;
+        user.typicalHoursPerWeek = request.typicalHoursPerWeek;
         user.maxHoursPerWeek = request.maxHoursPerWeek;
+        user.phoneNumber = request.phoneNumber;
 
         // Resolve tags
         if (request.tagIds != null) {
@@ -97,7 +99,9 @@ public class StaffResource {
 
         user.name = request.name;
         user.email = request.email;
+        user.typicalHoursPerWeek = request.typicalHoursPerWeek;
         user.maxHoursPerWeek = request.maxHoursPerWeek;
+        user.phoneNumber = request.phoneNumber;
 
         if (request.password != null && !request.password.isBlank()) {
             user.passwordHash = BCrypt.hashpw(request.password, BCrypt.gensalt());
@@ -317,7 +321,9 @@ public class StaffResource {
         dto.name = user.name;
         dto.email = user.email;
         dto.role = user.role.name();
+        dto.typicalHoursPerWeek = user.typicalHoursPerWeek;
         dto.maxHoursPerWeek = user.maxHoursPerWeek;
+        dto.phoneNumber = user.phoneNumber;
         dto.tags = user.tags.stream()
                 .map(t -> new StaffDTO.TagDTO(t.id, t.name))
                 .collect(Collectors.toSet());

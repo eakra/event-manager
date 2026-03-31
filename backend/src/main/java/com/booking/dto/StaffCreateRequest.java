@@ -17,7 +17,11 @@ public class StaffCreateRequest {
     @NotBlank
     public String password;
 
+    public Integer typicalHoursPerWeek = 21;
+
     public Integer maxHoursPerWeek = 40;
+
+    public String phoneNumber;
 
     public Set<Long> tagIds;
 

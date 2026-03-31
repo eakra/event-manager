@@ -9,7 +9,9 @@ public class StaffDTO {
     public String name;
     public String email;
     public String role;
+    public Integer typicalHoursPerWeek;
     public Integer maxHoursPerWeek;
+    public String phoneNumber;
     public Set<TagDTO> tags;
     public List<AvailabilityDTO> availability;
     public List<HolidayDTO> holidays = new ArrayList<>();
