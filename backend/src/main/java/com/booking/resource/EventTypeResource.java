@@ -1,5 +1,6 @@
 package com.booking.resource;
 
+import com.booking.dto.EventTypeDTO;
 import com.booking.entity.EventType;
 import com.booking.entity.Tag;
 import jakarta.annotation.security.RolesAllowed;
@@ -11,6 +12,7 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Path("/api/event-types")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,17 +30,19 @@ public class EventTypeResource {
 
     @GET
     @Transactional
-    public List<EventType> list() {
-        return EventType.listAll();
+    public List<EventTypeDTO> list() {
+        return EventType.<EventType>listAll().stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @GET
     @Path("/{id}")
     @Transactional
-    public EventType get(@PathParam("id") Long id) {
+    public EventTypeDTO get(@PathParam("id") Long id) {
         EventType et = EventType.findById(id);
         if (et == null) throw new NotFoundException("EventType not found");
-        return et;
+        return toDTO(et);
     }
 
     @POST
@@ -51,13 +55,13 @@ public class EventTypeResource {
         et.eventDurationMinutes = request.eventDurationMinutes;
         et.requiredTags = resolveTagIds(request.requiredTagIds);
         et.persist();
-        return Response.created(URI.create("/api/event-types/" + et.id)).entity(et).build();
+        return Response.created(URI.create("/api/event-types/" + et.id)).entity(toDTO(et)).build();
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    public EventType update(@PathParam("id") Long id, EventTypeRequest request) {
+    public EventTypeDTO update(@PathParam("id") Long id, EventTypeRequest request) {
         EventType et = EventType.findById(id);
         if (et == null) throw new NotFoundException("EventType not found");
         et.name = request.name;
@@ -65,7 +69,7 @@ public class EventTypeResource {
         if (request.shiftDurationMinutes != null) et.shiftDurationMinutes = request.shiftDurationMinutes;
         if (request.eventDurationMinutes != null) et.eventDurationMinutes = request.eventDurationMinutes;
         et.requiredTags = resolveTagIds(request.requiredTagIds);
-        return et;
+        return toDTO(et);
     }
 
     @DELETE
@@ -88,5 +92,16 @@ public class EventTypeResource {
             }
         }
         return tags;
+    }
+
+    private EventTypeDTO toDTO(EventType et) {
+        EventTypeDTO dto = new EventTypeDTO();
+        dto.id = et.id;
+        dto.name = et.name;
+        dto.description = et.description;
+        dto.shiftDurationMinutes = et.shiftDurationMinutes;
+        dto.eventDurationMinutes = et.eventDurationMinutes;
+        dto.requiredTags = et.requiredTags.stream().map(t -> t.name).collect(Collectors.toSet());
+        return dto;
     }
 }
