@@ -46,10 +46,9 @@ export default function LoginPage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: `radial-gradient(ellipse at 30% 30%, ${alpha(theme.palette.primary.main, 0.15)} 0%, transparent 50%),
-                     radial-gradient(ellipse at 70% 70%, ${alpha(theme.palette.secondary.main, 0.08)} 0%, transparent 50%),
-                     radial-gradient(ellipse at 50% 50%, rgba(145, 58, 142, 0.05) 0%, transparent 50%),
-                     ${theme.palette.background.default}`,
+        background: `radial-gradient(ellipse at 30% 30%, ${alpha(theme.palette.primary.main, 0.1)} 0%, transparent 50%),
+                     radial-gradient(ellipse at 70% 70%, ${alpha(theme.palette.secondary.main, 0.05)} 0%, transparent 50%),
+                     linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)`,
         p: 2,
       }}
     >
@@ -58,9 +57,11 @@ export default function LoginPage() {
           maxWidth: 420,
           width: '100%',
           p: 1,
-          backdropFilter: 'blur(40px)',
-          border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-          boxShadow: `0 20px 60px ${alpha(theme.palette.primary.main, 0.1)}`,
+          borderRadius: 4,
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          backdropFilter: 'blur(20px)',
+          border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.05)',
         }}
       >
         <CardContent sx={{ p: 4 }}>
@@ -149,7 +150,7 @@ export default function LoginPage() {
           <Box sx={{ mt: 3, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary">
               Don't have an account?{' '}
-              <Box component={RouterLink} to="/register" sx={{ fontWeight: 600, color: 'primary.light', textDecoration: 'none' }}>
+              <Box component={RouterLink} to="/register" sx={{ fontWeight: 600, color: 'primary.main', textDecoration: 'none' }}>
                 Join Us
               </Box>
             </Typography>

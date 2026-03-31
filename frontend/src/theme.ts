@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: 'light',
     primary: {
       main: '#0b8e36',
       light: '#45bd62',
@@ -14,8 +14,8 @@ const theme = createTheme({
       dark: '#0081b4',
     },
     background: {
-      default: '#0A0E1A',
-      paper: '#111827',
+      default: '#F8FAFC',
+      paper: '#FFFFFF',
     },
     success: {
       main: '#0b8e36',
@@ -27,8 +27,8 @@ const theme = createTheme({
       main: '#e6007e',
     },
     text: {
-      primary: '#e8eaed',
-      secondary: '#9aa0a6',
+      primary: '#1E293B',
+      secondary: '#64748B',
     },
   },
   typography: {
@@ -65,8 +65,9 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundImage: 'radial-gradient(ellipse at 20% 50%, rgba(11, 142, 54, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(39, 176, 231, 0.06) 0%, transparent 50%)',
+          backgroundImage: 'radial-gradient(ellipse at 20% 50%, rgba(11, 142, 54, 0.05) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(39, 176, 231, 0.04) 0%, transparent 50%)',
           backgroundAttachment: 'fixed',
+          backgroundColor: '#F8FAFC',
         },
       },
     },
@@ -74,7 +75,8 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
+          border: '1px solid #E2E8F0',
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)',
         },
       },
     },
@@ -85,9 +87,9 @@ const theme = createTheme({
           padding: '8px 20px',
         },
         contained: {
-          boxShadow: '0 4px 14px 0 rgba(11, 142, 54, 0.3)',
+          boxShadow: '0 4px 14px 0 rgba(11, 142, 54, 0.2)',
           '&:hover': {
-            boxShadow: '0 6px 20px 0 rgba(11, 142, 54, 0.4)',
+            boxShadow: '0 6px 20px 0 rgba(11, 142, 54, 0.25)',
           },
         },
       },
@@ -95,8 +97,9 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backdropFilter: 'blur(20px)',
-          backgroundColor: 'rgba(17, 24, 39, 0.8)',
+          backgroundColor: '#FFFFFF',
+          borderRadius: 16,
+          border: '1px solid #E2E8F0',
         },
       },
     },
@@ -105,8 +108,8 @@ const theme = createTheme({
         root: {
           '& .MuiTableCell-head': {
             fontWeight: 700,
-            backgroundColor: 'rgba(11, 142, 54, 0.1)',
-            color: '#45bd62',
+            backgroundColor: '#F1F5F9',
+            color: '#1E293B',
           },
         },
       },
@@ -114,15 +117,16 @@ const theme = createTheme({
     MuiChip: {
       styleOverrides: {
         root: {
-          fontWeight: 500,
+          fontWeight: 600,
+          borderRadius: 8,
         },
       },
     },
     MuiDialog: {
       styleOverrides: {
         paper: {
-          backdropFilter: 'blur(20px)',
-          backgroundColor: 'rgba(17, 24, 39, 0.95)',
+          backgroundColor: '#FFFFFF',
+          borderRadius: 20,
         },
       },
     },

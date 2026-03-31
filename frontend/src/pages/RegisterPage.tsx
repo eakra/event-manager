@@ -38,10 +38,21 @@ export default function RegisterPage() {
   return (
     <Box sx={{
       height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: `radial-gradient(circle at top left, ${alpha(theme.palette.primary.dark, 0.4)}, transparent 40%),
-                   radial-gradient(circle at bottom right, ${alpha(theme.palette.secondary.dark, 0.4)}, transparent 40%)`,
+      background: `radial-gradient(ellipse at 30% 30%, ${alpha(theme.palette.primary.main, 0.1)} 0%, transparent 50%),
+                   radial-gradient(ellipse at 70% 70%, ${alpha(theme.palette.secondary.main, 0.05)} 0%, transparent 50%),
+                   linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%)`,
     }}>
-      <Card sx={{ maxWidth: 400, width: '100%', mx: 2, p: 2, backdropFilter: 'blur(10px)', bgcolor: alpha(theme.palette.background.paper, 0.7) }}>
+      <Card sx={{ 
+        maxWidth: 400, 
+        width: '100%', 
+        mx: 2, 
+        p: 2, 
+        borderRadius: 4,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        backdropFilter: 'blur(20px)',
+        border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.05)',
+      }}>
         <CardContent>
           <Box sx={{ textAlign: 'center', mb: 3 }}>
             <Box
@@ -119,7 +130,7 @@ export default function RegisterPage() {
           <Box sx={{ mt: 3, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary">
               Already have an account?{' '}
-              <Link component={RouterLink} to="/login" sx={{ fontWeight: 600, color: 'primary.light', textDecoration: 'none' }}>
+              <Link component={RouterLink} to="/login" sx={{ fontWeight: 600, color: 'primary.main', textDecoration: 'none' }}>
                 Sign In
               </Link>
             </Typography>

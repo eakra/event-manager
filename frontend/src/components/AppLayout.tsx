@@ -83,7 +83,7 @@ export default function AppLayout() {
         </Box>
       </Box>
 
-      <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)' }} />
+      <Divider sx={{ borderColor: 'rgba(0,0,0,0.06)' }} />
 
       <List sx={{ flex: 1, px: 1.5, py: 1 }}>
         {menuItems.map((item) => {
@@ -107,7 +107,7 @@ export default function AppLayout() {
                 <ListItemIcon
                   sx={{
                     minWidth: 40,
-                    color: isActive ? theme.palette.primary.light : theme.palette.text.secondary,
+                    color: isActive ? theme.palette.primary.main : theme.palette.text.secondary,
                   }}
                 >
                   {item.icon}
@@ -116,7 +116,7 @@ export default function AppLayout() {
                   primary={item.text}
                   primaryTypographyProps={{
                     fontWeight: isActive ? 600 : 400,
-                    color: isActive ? theme.palette.primary.light : theme.palette.text.primary,
+                    color: isActive ? theme.palette.primary.main : theme.palette.text.primary,
                     fontSize: '0.9rem',
                   }}
                 />
@@ -126,7 +126,7 @@ export default function AppLayout() {
         })}
       </List>
 
-      <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)' }} />
+      <Divider sx={{ borderColor: 'rgba(0,0,0,0.06)' }} />
 
       <Box sx={{ p: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5 }}>
@@ -180,7 +180,7 @@ export default function AppLayout() {
           display: { md: 'none' },
           bgcolor: alpha(theme.palette.background.default, 0.8),
           backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid rgba(0,0,0,0.08)',
         }}
       >
         <Toolbar>
@@ -208,7 +208,7 @@ export default function AppLayout() {
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             bgcolor: 'background.paper',
-            borderRight: '1px solid rgba(255,255,255,0.06)',
+            borderRight: '1px solid rgba(0,0,0,0.08)',
           },
         }}
       >
