@@ -323,12 +323,24 @@ public class EventInstanceResource {
     private EventInstanceDTO toDTO(EventInstance ei) {
         EventInstanceDTO dto = new EventInstanceDTO();
         dto.id = ei.id;
-        dto.eventTypeId = ei.eventType.id;
-        dto.eventTypeName = ei.eventType.name;
+        if (ei.eventType != null) {
+            dto.eventTypeId = ei.eventType.id;
+            dto.eventTypeName = ei.eventType.name;
+        }
         dto.eventDurationMinutes = ei.getEffectiveEventDuration();
         dto.shiftDurationMinutes = ei.getEffectiveShiftDuration();
-        dto.locationId = ei.location.id;
-        dto.locationName = ei.location.name;
+        if (ei.location != null) {
+            dto.locationId = ei.location.id;
+            dto.locationName = ei.location.name;
+            // Populate location details
+            dto.addressLine1 = ei.location.addressLine1;
+            dto.addressLine2 = ei.location.addressLine2;
+            dto.city = ei.location.city;
+            dto.zipCode = ei.location.zipCode;
+            dto.contactName = ei.location.contactName;
+            dto.contactPhone = ei.location.contactPhone;
+            dto.contactEmail = ei.location.contactEmail;
+        }
         dto.eventDate = ei.eventDate;
         dto.shiftStartTime = ei.shiftStartTime;
         dto.eventStartTime = ei.eventStartTime;
@@ -337,15 +349,6 @@ public class EventInstanceResource {
         dto.status = ei.status;
         dto.capacityOverride = ei.capacityOverride;
         dto.description = ei.description;
-        
-        // Populate location details
-        dto.addressLine1 = ei.location.addressLine1;
-        dto.addressLine2 = ei.location.addressLine2;
-        dto.city = ei.location.city;
-        dto.zipCode = ei.location.zipCode;
-        dto.contactName = ei.location.contactName;
-        dto.contactPhone = ei.location.contactPhone;
-        dto.contactEmail = ei.location.contactEmail;
         
         dto.minStaff = ei.minStaff;
         dto.maxStaff = ei.maxStaff;
@@ -362,9 +365,11 @@ public class EventInstanceResource {
                 .map(a -> new EventInstanceDTO.StaffBriefDTO(a.user.id, a.user.name, a.user.email))
                 .collect(Collectors.toList());
         dto.participantCount = ei.registrations != null ? ei.registrations.size() : 0;
-        dto.requiredTags = ei.eventType.requiredTags.stream()
-                .map(t -> t.name)
-                .collect(Collectors.toList());
+        if (ei.eventType != null) {
+            dto.requiredTags = ei.eventType.requiredTags.stream()
+                    .map(t -> t.name)
+                    .collect(Collectors.toList());
+        }
         return dto;
     }
 }

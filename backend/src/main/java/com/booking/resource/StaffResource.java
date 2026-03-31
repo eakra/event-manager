@@ -133,6 +133,7 @@ public class StaffResource {
     @GET
     @Path("/{id}/schedule")
     @RolesAllowed({"ADMIN", "STAFF"})
+    @Transactional
     public List<EventInstanceDTO> getSchedule(
             @PathParam("id") Long id,
             @QueryParam("from") String from,

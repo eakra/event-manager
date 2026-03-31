@@ -16,12 +16,14 @@ import java.util.List;
 public class LocationResource {
 
     @GET
+    @Transactional
     public List<Location> list() {
         return Location.listAll();
     }
 
     @GET
     @Path("/{id}")
+    @Transactional
     public Location get(@PathParam("id") Long id) {
         Location loc = Location.findById(id);
         if (loc == null) throw new NotFoundException("Location not found");

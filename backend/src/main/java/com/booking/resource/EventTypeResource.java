@@ -27,12 +27,14 @@ public class EventTypeResource {
     }
 
     @GET
+    @Transactional
     public List<EventType> list() {
         return EventType.listAll();
     }
 
     @GET
     @Path("/{id}")
+    @Transactional
     public EventType get(@PathParam("id") Long id) {
         EventType et = EventType.findById(id);
         if (et == null) throw new NotFoundException("EventType not found");

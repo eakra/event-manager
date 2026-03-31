@@ -29,6 +29,7 @@ public class CommunicationsResource {
 
     @POST
     @Path("/notify-staff")
+    @Transactional
     public Response notifyStaff(@Valid NotifyStaffRequest request) {
         LocalDate weekStart = request.weekStartDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate weekEnd = weekStart.plusDays(6);
