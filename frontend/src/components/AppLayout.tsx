@@ -243,7 +243,7 @@ export default function AppLayout() {
         sx={{
           flexGrow: 1,
           p: 3,
-          pt: { xs: 10, md: 3 },
+          pt: { xs: 10, md: 10 },
           width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
           minHeight: '100vh',
         }}
