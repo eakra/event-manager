@@ -1,6 +1,7 @@
 package com.booking.resource;
 
 import com.booking.dto.EventTypeDTO;
+import com.booking.dto.TagDTO;
 import com.booking.entity.EventType;
 import com.booking.entity.Tag;
 import jakarta.annotation.security.RolesAllowed;
