@@ -116,7 +116,7 @@ export default function ParticipantEventsPage() {
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5, color: 'text.secondary' }}>
                   <TimeIcon sx={{ fontSize: 18, mr: 1, color: 'primary.main', opacity: 0.8 }} />
                   <Typography variant="body2" fontWeight={500}>
-                    {event.startTime?.slice(0, 5)} - {event.endTime?.slice(0, 5)}
+                    {event.eventStartTime?.slice(0, 5)} - {event.eventEndTime?.slice(0, 5)}
                   </Typography>
                 </Box>
 
@@ -196,7 +196,7 @@ export default function ParticipantEventsPage() {
                           </Avatar>
                           <Box>
                             <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1 }}>Time</Typography>
-                            <Typography variant="body2" fontWeight={700} sx={{ lineHeight: 1.2 }}>{event.startTime?.slice(0, 5)} – {event.endTime?.slice(0, 5)}</Typography>
+                            <Typography variant="body2" fontWeight={700} sx={{ lineHeight: 1.2 }}>{event.eventStartTime?.slice(0, 5)} – {event.eventEndTime?.slice(0, 5)}</Typography>
                           </Box>
                         </Stack>
                         <Stack direction="row" spacing={1} alignItems="center">
@@ -205,7 +205,7 @@ export default function ParticipantEventsPage() {
                           </Avatar>
                           <Box>
                             <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1 }}>Duration</Typography>
-                            <Typography variant="body2" fontWeight={700} sx={{ lineHeight: 1.2 }}>{event.durationMinutes} mins</Typography>
+                            <Typography variant="body2" fontWeight={700} sx={{ lineHeight: 1.2 }}>{event.eventDurationMinutes} mins</Typography>
                           </Box>
                         </Stack>
                         <Stack direction="row" spacing={1} alignItems="center">

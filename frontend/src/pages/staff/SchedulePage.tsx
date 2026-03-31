@@ -110,55 +110,48 @@ export default function SchedulePage() {
                     </Typography>
                   </Box>
 
-                  <Box sx={{ flex: 1, minWidth: 200, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                        <Typography variant="h6" fontWeight={600}>{event.eventTypeName}</Typography>
-                        {event.status === 'DRAFT' && (
-                           <Chip label="Draft" size="small" variant="outlined" color="warning" sx={{ height: 20, fontSize: '0.65rem' }} />
-                        )}
-                        <Chip
-                          label={getDayLabel(event.eventDate)}
-                        size="small"
-                        sx={{
-                          height: 20,
-                          fontSize: '0.65rem',
-                          bgcolor: isToday(parseISO(event.eventDate))
-                            ? alpha(theme.palette.success.main, 0.15)
-                            : alpha(theme.palette.primary.main, 0.1),
-                          color: isToday(parseISO(event.eventDate))
-                            ? theme.palette.success.main
-                            : theme.palette.primary.light,
-                        }}
-                      />
-                    </Box>
-                    <Box sx={{ display: 'flex', gap: 2, color: 'text.secondary' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <AccessTime sx={{ fontSize: 16 }} />
-                        <Typography variant="body2">
-                          {event.startTime?.slice(0, 5)} – {event.endTime?.slice(0, 5)}
-                        </Typography>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <LocationOn sx={{ fontSize: 16 }} />
-                        <Typography variant="body2">{event.locationName}</Typography>
-                      </Box>
-                    </Box>
-                    </Box>
+                      <Box sx={{ flex: 1, minWidth: 200, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Box>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                            <Typography variant="h6" fontWeight={600} sx={{ lineHeight: 1.2 }}>{event.eventTypeName}</Typography>
+                            {event.status === 'DRAFT' && <Chip label="Draft" size="small" variant="outlined" color="warning" sx={{ height: 20, fontSize: '0.65rem' }} />}
+                            <Chip label={getDayLabel(event.eventDate)} size="small" sx={{ height: 20, fontSize: '0.65rem', bgcolor: isToday(parseISO(event.eventDate)) ? alpha(theme.palette.success.main, 0.15) : alpha(theme.palette.primary.main, 0.1), color: isToday(parseISO(event.eventDate)) ? theme.palette.success.main : theme.palette.primary.light }} />
+                          </Box>
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'flex-start' }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, color: 'text.secondary' }}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                <AccessTime sx={{ fontSize: 14 }} />
+                                <Typography variant="caption">
+                                  Shift: {event.shiftStartTime?.slice(0, 5)} – {event.shiftEndTime?.slice(0, 5)}
+                                </Typography>
+                              </Box>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'primary.light' }}>
+                                <AccessTime sx={{ fontSize: 14 }} />
+                                <Typography variant="caption" fontWeight={700}>
+                                  Event: {event.eventStartTime?.slice(0, 5)} – {event.eventEndTime?.slice(0, 5)}
+                                </Typography>
+                              </Box>
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary', mt: 0.2 }}>
+                              <LocationOn sx={{ fontSize: 16 }} />
+                              <Typography variant="body2">{event.locationName}</Typography>
+                            </Box>
+                          </Box>
+                        </Box>
 
-                    {event.status === 'DRAFT' && (
-                      <Box sx={{ ml: 'auto', pl: 2 }} onClick={(e) => e.stopPropagation()}>
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          disabled={!event.assignedStaff || event.assignedStaff.length < event.effectiveMinStaff || publishingId === event.id}
-                          onClick={() => handlePublish(event.id)}
-                        >
-                          {publishingId === event.id ? <CircularProgress size={16} /> : 'Publish'}
-                        </Button>
+                        {event.status === 'DRAFT' && (
+                          <Box sx={{ ml: 'auto', pl: 2 }} onClick={(e) => e.stopPropagation()}>
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              disabled={!event.assignedStaff || event.assignedStaff.length < event.effectiveMinStaff || publishingId === event.id}
+                              onClick={() => handlePublish(event.id)}
+                            >
+                              {publishingId === event.id ? <CircularProgress size={16} /> : 'Publish'}
+                            </Button>
+                          </Box>
+                        )}
                       </Box>
-                    )}
-                  </Box>
                 </CardContent>
               </Card>
             );
