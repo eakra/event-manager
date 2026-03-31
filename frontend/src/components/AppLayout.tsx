@@ -21,11 +21,11 @@ import { useAuth } from '../contexts/AuthContext';
 const DRAWER_WIDTH = 260;
 
 const adminMenuItems = [
-  { text: 'Events', icon: <EventIcon />, path: '/admin/events' },
   { text: 'Event Types', icon: <EventTypeIcon />, path: '/admin/event-types' },
+  { text: 'Events', icon: <EventIcon />, path: '/admin/events' },
+  { text: 'Locations', icon: <LocationIcon />, path: '/admin/locations' },
   { text: 'Staff', icon: <StaffIcon />, path: '/admin/staff' },
   { text: 'Participants', icon: <PersonIcon />, path: '/admin/participants' },
-  { text: 'Locations', icon: <LocationIcon />, path: '/admin/locations' },
   { text: 'Settings', icon: <SettingsIcon />, path: '/admin/settings' },
 ];
 
