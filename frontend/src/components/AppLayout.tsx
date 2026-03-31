@@ -62,22 +62,17 @@ export default function AppLayout() {
 
   const drawer = (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ p: 2.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
         <Box
+          component="img"
+          src="/OYCI-Logo.png"
+          alt="OYCI Logo"
           sx={{
-            width: 36,
-            height: 36,
-            borderRadius: '10px',
-            background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 800,
-            fontSize: 16,
+            width: 40,
+            height: 40,
+            objectFit: 'contain',
           }}
-        >
-          ES
-        </Box>
+        />
         <Box>
           <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2}>
             Event Staffing

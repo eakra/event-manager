@@ -4,31 +4,31 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#7C4DFF',
-      light: '#B47CFF',
-      dark: '#5A1DCC',
+      main: '#0b8e36',
+      light: '#45bd62',
+      dark: '#066633',
     },
     secondary: {
-      main: '#00E5FF',
-      light: '#6EFFFF',
-      dark: '#00B2CC',
+      main: '#27b0e7',
+      light: '#70d1ff',
+      dark: '#0081b4',
     },
     background: {
       default: '#0A0E1A',
       paper: '#111827',
     },
     success: {
-      main: '#00E676',
+      main: '#0b8e36',
     },
     warning: {
-      main: '#FFAB40',
+      main: '#ffab40',
     },
     error: {
-      main: '#FF5252',
+      main: '#e6007e',
     },
     text: {
-      primary: '#E8EAED',
-      secondary: '#9AA0A6',
+      primary: '#e8eaed',
+      secondary: '#9aa0a6',
     },
   },
   typography: {
@@ -65,7 +65,7 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundImage: 'radial-gradient(ellipse at 20% 50%, rgba(124, 77, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(0, 229, 255, 0.06) 0%, transparent 50%)',
+          backgroundImage: 'radial-gradient(ellipse at 20% 50%, rgba(11, 142, 54, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(39, 176, 231, 0.06) 0%, transparent 50%)',
           backgroundAttachment: 'fixed',
         },
       },
@@ -85,9 +85,9 @@ const theme = createTheme({
           padding: '8px 20px',
         },
         contained: {
-          boxShadow: '0 4px 14px 0 rgba(124, 77, 255, 0.3)',
+          boxShadow: '0 4px 14px 0 rgba(11, 142, 54, 0.3)',
           '&:hover': {
-            boxShadow: '0 6px 20px 0 rgba(124, 77, 255, 0.4)',
+            boxShadow: '0 6px 20px 0 rgba(11, 142, 54, 0.4)',
           },
         },
       },
@@ -105,8 +105,8 @@ const theme = createTheme({
         root: {
           '& .MuiTableCell-head': {
             fontWeight: 700,
-            backgroundColor: 'rgba(124, 77, 255, 0.1)',
-            color: '#B47CFF',
+            backgroundColor: 'rgba(11, 142, 54, 0.1)',
+            color: '#45bd62',
           },
         },
       },

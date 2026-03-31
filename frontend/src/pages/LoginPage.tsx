@@ -4,7 +4,7 @@ import {
   Box, Card, CardContent, TextField, Button, Typography,
   Alert, CircularProgress, useTheme, alpha, InputAdornment, IconButton,
 } from '@mui/material';
-import { Visibility, VisibilityOff, LockOutlined } from '@mui/icons-material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function LoginPage() {
@@ -47,7 +47,8 @@ export default function LoginPage() {
         alignItems: 'center',
         justifyContent: 'center',
         background: `radial-gradient(ellipse at 30% 30%, ${alpha(theme.palette.primary.main, 0.15)} 0%, transparent 50%),
-                     radial-gradient(ellipse at 70% 70%, ${alpha(theme.palette.secondary.main, 0.1)} 0%, transparent 50%),
+                     radial-gradient(ellipse at 70% 70%, ${alpha(theme.palette.secondary.main, 0.08)} 0%, transparent 50%),
+                     radial-gradient(ellipse at 50% 50%, rgba(145, 58, 142, 0.05) 0%, transparent 50%),
                      ${theme.palette.background.default}`,
         p: 2,
       }}
@@ -65,21 +66,18 @@ export default function LoginPage() {
         <CardContent sx={{ p: 4 }}>
           <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Box
+              component="img"
+              src="/OYCI-Logo.png"
+              alt="OYCI Logo"
               sx={{
-                width: 56,
-                height: 56,
-                borderRadius: '16px',
-                background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: 72,
+                height: 72,
                 mx: 'auto',
                 mb: 2,
-                boxShadow: `0 8px 32px ${alpha(theme.palette.primary.main, 0.3)}`,
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 8px 16px rgba(11, 142, 54, 0.2))',
               }}
-            >
-              <LockOutlined sx={{ fontSize: 28, color: '#fff' }} />
-            </Box>
+            />
             <Typography variant="h5" fontWeight={700} gutterBottom>
               Welcome Back
             </Typography>

@@ -44,6 +44,18 @@ export default function RegisterPage() {
       <Card sx={{ maxWidth: 400, width: '100%', mx: 2, p: 2, backdropFilter: 'blur(10px)', bgcolor: alpha(theme.palette.background.paper, 0.7) }}>
         <CardContent>
           <Box sx={{ textAlign: 'center', mb: 3 }}>
+            <Box
+              component="img"
+              src="/OYCI-Logo.png"
+              alt="OYCI Logo"
+              sx={{
+                width: 64,
+                height: 64,
+                mx: 'auto',
+                mb: 2,
+                objectFit: 'contain',
+              }}
+            />
             <Typography variant="h4" fontWeight={800} sx={{
               background: `linear-gradient(45deg, ${theme.palette.primary.light}, ${theme.palette.secondary.light})`,
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
