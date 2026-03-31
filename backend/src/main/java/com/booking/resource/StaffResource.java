@@ -155,7 +155,7 @@ public class StaffResource {
             dto.id = ei.id;
             dto.eventTypeId = ei.eventType.id;
             dto.eventTypeName = ei.eventType.name;
-            dto.durationMinutes = ei.eventType.durationMinutes;
+            dto.eventDurationMinutes = ei.getEffectiveEventDuration();
             dto.locationId = ei.location.id;
             dto.locationName = ei.location.name;
             dto.eventDate = ei.eventDate;

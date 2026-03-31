@@ -29,6 +29,9 @@ public class User extends BaseEntity {
     @Column(name = "typical_hours_per_week", nullable = false)
     public Integer typicalHoursPerWeek = 21;
 
+    @Column(name = "max_hours_per_week", nullable = false)
+    public Integer maxHoursPerWeek = 40;
+
     @Column(name = "phone_number", length = 20)
     public String phoneNumber;
 
