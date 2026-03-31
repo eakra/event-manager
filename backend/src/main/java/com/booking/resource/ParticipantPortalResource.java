@@ -29,6 +29,7 @@ public class ParticipantPortalResource {
 
     @GET
     @Path("/events")
+    @Transactional
     public List<EventInstanceDTO> getEvents() {
         return EventInstance.<EventInstance>list("status = ?1 ORDER BY eventDate, eventStartTime", EventStatus.PUBLISHED)
                 .stream().map(this::toEventDTO).collect(Collectors.toList());

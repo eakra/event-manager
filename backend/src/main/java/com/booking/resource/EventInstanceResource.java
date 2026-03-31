@@ -28,6 +28,7 @@ public class EventInstanceResource {
 
     @GET
     @RolesAllowed({"ADMIN", "STAFF"})
+    @Transactional
     public List<EventInstanceDTO> list(
             @QueryParam("from") String from,
             @QueryParam("to") String to,
@@ -55,6 +56,7 @@ public class EventInstanceResource {
     @GET
     @Path("/{id}")
     @RolesAllowed({"ADMIN", "STAFF"})
+    @Transactional
     public EventInstanceDTO get(@PathParam("id") Long id) {
         EventInstance ei = EventInstance.findById(id);
         if (ei == null) throw new NotFoundException("EventInstance not found");
@@ -142,6 +144,7 @@ public class EventInstanceResource {
     @GET
     @Path("/{id}/available-staff")
     @RolesAllowed({"ADMIN", "STAFF"})
+    @Transactional
     public List<AvailableStaffDTO> getAvailableStaff(@PathParam("id") Long id) {
         EventInstance ei = EventInstance.findById(id);
         if (ei == null) throw new NotFoundException("EventInstance not found");
