@@ -20,6 +20,8 @@ public class EventInstanceCreateRequest {
 
     public String status; // optional, defaults to DRAFT
 
+    public String description;
+
     public Integer capacityOverride;
 
     public Integer minStaff;

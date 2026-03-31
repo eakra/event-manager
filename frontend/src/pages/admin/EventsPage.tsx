@@ -42,6 +42,7 @@ interface EventInstanceData {
   endTime: string;
   status: string;
   durationMinutes: number;
+  description: string;
   assignedStaff: { id: number; name: string }[];
 }
 
@@ -126,7 +127,17 @@ const CustomEvent = ({ event }: any) => {
 
 
   return (
-    <Tooltip title={`${event.title} - ${event.resource.locationName}`}>
+    <Tooltip title={
+      <Box sx={{ p: 0.5 }}>
+        <Typography variant="subtitle2" fontWeight={800}>{event.title}</Typography>
+        <Typography variant="caption" display="block">{event.resource.locationName}</Typography>
+        {event.resource.description && (
+          <Typography variant="caption" sx={{ mt: 1, display: 'block', fontStyle: 'italic', opacity: 0.9 }}>
+            {event.resource.description}
+          </Typography>
+        )}
+      </Box>
+    }>
       <Box sx={{
         p: 0.5,
         height: '100%',
@@ -294,6 +305,11 @@ export default function EventsPage() {
                   >
                     <TableCell>
                       <Typography fontWeight={700} color="primary" sx={{ fontSize: '0.95rem' }}>{eventInstance.eventTypeName}</Typography>
+                      {eventInstance.description && (
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {eventInstance.description}
+                        </Typography>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2" fontWeight={500}>{format(new Date(eventInstance.eventDate), 'EEE, d MMM yyyy')}</Typography>

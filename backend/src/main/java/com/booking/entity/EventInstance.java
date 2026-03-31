@@ -29,6 +29,9 @@ public class EventInstance extends BaseEntity {
     @Column(nullable = false, length = 20)
     public EventStatus status = EventStatus.DRAFT;
 
+    @Column(columnDefinition = "TEXT")
+    public String description;
+
     @Column(name = "capacity_override")
     public Integer capacityOverride;
 

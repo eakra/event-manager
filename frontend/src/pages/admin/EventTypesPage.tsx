@@ -111,7 +111,12 @@ export default function EventTypesPage() {
             <TableBody>
               {eventTypes.map((et) => (
                 <TableRow key={et.id} hover>
-                  <TableCell><Typography fontWeight={600}>{et.name}</Typography></TableCell>
+                  <TableCell>
+                    <Typography fontWeight={600}>{et.name}</Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {et.description}
+                    </Typography>
+                  </TableCell>
                   <TableCell>{et.durationMinutes} min</TableCell>
                   <TableCell>{et.minStaff} - {et.maxStaff}</TableCell>
                   <TableCell>{et.maxParticipants}</TableCell>

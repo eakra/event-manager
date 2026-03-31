@@ -16,6 +16,7 @@ public class EventInstanceDTO {
     public LocalTime startTime;
     public LocalTime endTime;
     public EventStatus status;
+    public String description;
     public Integer capacityOverride;
     
     // Location details for Overview

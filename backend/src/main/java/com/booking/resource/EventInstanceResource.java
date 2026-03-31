@@ -82,6 +82,7 @@ public class EventInstanceResource {
         ei.maxParticipants = request.maxParticipants;
         ei.minAge = request.minAge;
         ei.maxAge = request.maxAge;
+        ei.description = request.description;
         ei.persist();
         return Response.created(URI.create("/api/event-instances/" + ei.id)).entity(toDTO(ei)).build();
     }
@@ -110,6 +111,7 @@ public class EventInstanceResource {
         ei.maxParticipants = request.maxParticipants;
         ei.minAge = request.minAge;
         ei.maxAge = request.maxAge;
+        ei.description = request.description;
         return toDTO(ei);
     }
 
@@ -237,6 +239,7 @@ public class EventInstanceResource {
         dto.endTime = ei.getEndTime();
         dto.status = ei.status;
         dto.capacityOverride = ei.capacityOverride;
+        dto.description = ei.description;
         
         // Populate location details
         dto.addressLine1 = ei.location.addressLine1;

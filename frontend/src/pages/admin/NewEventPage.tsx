@@ -26,6 +26,7 @@ export default function NewEventPage() {
     maxParticipants: '',
     minAge: '',
     maxAge: '',
+    description: '',
   });
   const navigate = useNavigate();
 
@@ -56,6 +57,7 @@ export default function NewEventPage() {
         maxParticipants: form.maxParticipants ? Number(form.maxParticipants) : null,
         minAge: form.minAge ? Number(form.minAge) : null,
         maxAge: form.maxAge ? Number(form.maxAge) : null,
+        description: form.description,
       });
       navigate('/admin/events');
     } catch (err: any) {
@@ -168,6 +170,16 @@ export default function NewEventPage() {
               <TextField label="Min Age" type="number" value={form.minAge} onChange={(e) => setForm({ ...form, minAge: e.target.value })} sx={{ flex: 1 }} />
               <TextField label="Max Age" type="number" value={form.maxAge} onChange={(e) => setForm({ ...form, maxAge: e.target.value })} sx={{ flex: 1 }} />
             </Box>
+            <TextField
+              label="Event Description"
+              multiline
+              rows={3}
+              fullWidth
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              sx={{ mt: 2 }}
+              placeholder="Enter specific details for this event instance..."
+            />
           </Box>
         )}
 
@@ -193,6 +205,8 @@ export default function NewEventPage() {
                   {form.minStaff || form.maxStaff || form.maxParticipants || form.minAge || form.maxAge 
                     ? 'Custom Rules Applied' : 'Using Defaults'}
                 </Typography>
+                <Typography>Description:</Typography>
+                <Typography sx={{ whiteSpace: 'pre-wrap' }}>{form.description || 'No description provided.'}</Typography>
               </Box>
             </Box>
           )}
