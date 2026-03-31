@@ -8,7 +8,12 @@ public class EventTypeDTO {
     public String description;
     public Integer shiftDurationMinutes;
     public Integer eventDurationMinutes;
-    public Set<String> requiredTags;
+    public Integer minStaff;
+    public Integer maxStaff;
+    public Integer maxParticipants;
+    public Integer minAge;
+    public Integer maxAge;
+    public Set<TagDTO> requiredTags;
 
     public EventTypeDTO() {}
 }
