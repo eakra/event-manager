@@ -73,17 +73,10 @@ public class StaffResource {
         }
 
         user.persist();
-
+        
         // Add availability
         if (request.availability != null) {
-            for (StaffDTO.AvailabilityDTO avDTO : request.availability) {
-                UserAvailability av = new UserAvailability();
-                av.user = user;
-                av.dayOfWeek = avDTO.dayOfWeek;
-                av.startTime = LocalTime.parse(avDTO.startTime);
-                av.endTime = LocalTime.parse(avDTO.endTime);
-                av.persist();
-            }
+            updateAvailabilityInternal(user, request.availability);
         }
 
         return Response.created(URI.create("/api/staff/" + user.id)).entity(toDTO(user)).build();
@@ -114,6 +107,11 @@ public class StaffResource {
                 Tag tag = Tag.findById(tagId);
                 if (tag != null) user.tags.add(tag);
             }
+        }
+
+        // Update availability
+        if (request.availability != null) {
+            updateAvailabilityInternal(user, request.availability);
         }
 
         return toDTO(user);
@@ -186,8 +184,14 @@ public class StaffResource {
         User user = User.findById(id);
         if (user == null) throw new NotFoundException("Staff not found");
 
+        updateAvailabilityInternal(user, availabilityList);
+
+        return toDTO(user);
+    }
+
+    private void updateAvailabilityInternal(User user, List<StaffDTO.AvailabilityDTO> availabilityList) {
         // Clear old availability
-        UserAvailability.delete("user.id", id);
+        UserAvailability.delete("user.id", user.id);
         user.availability.clear();
 
         // Add new availability
@@ -200,8 +204,6 @@ public class StaffResource {
             av.persist();
             user.availability.add(av);
         }
-
-        return toDTO(user);
     }
 
     public static class MaxHoursRequest {
