@@ -15,6 +15,7 @@ public class AvailableStaffDTO {
     public List<String> warningMessages;
     public boolean perfectMatch;
     public boolean onHoliday;
+    public boolean canAssign = true;
 
     public AvailableStaffDTO() {}
 }

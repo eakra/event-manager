@@ -56,6 +56,7 @@ public class AssignmentEngine {
             for (Tag requiredTag : eventType.requiredTags) {
                 if (!staffTagIds.contains(requiredTag.id)) {
                     dto.warningMessages.add("Missing qualification: " + requiredTag.name);
+                    dto.canAssign = false;
                 }
             }
 
@@ -106,6 +107,7 @@ public class AssignmentEngine {
                 if (!eventDate.isBefore(holiday.startDate) && !eventDate.isAfter(holiday.endDate)) {
                     dto.onHoliday = true;
                     dto.warningMessages.add("On holiday");
+                    dto.canAssign = false;
                     break;
                 }
             }
@@ -114,11 +116,14 @@ public class AssignmentEngine {
             results.add(dto);
         }
 
-        // Sort: On holiday absolute bottom, perfect matches first, then alphabetically by name
+        // Sort: canAssign first, then perfect matches, then fewer hours, then alphabetically by name
         results.sort((a, b) -> {
-            if (a.onHoliday != b.onHoliday) return a.onHoliday ? 1 : -1;
-            if (a.perfectMatch && !b.perfectMatch) return -1;
-            if (!a.perfectMatch && b.perfectMatch) return 1;
+            if (a.canAssign != b.canAssign) return a.canAssign ? -1 : 1;
+            if (a.perfectMatch != b.perfectMatch) return a.perfectMatch ? -1 : 1;
+            // Both are either perfect matches or both have warnings
+            if (a.currentWeekHours != b.currentWeekHours) {
+                return Double.compare(a.currentWeekHours, b.currentWeekHours);
+            }
             return a.name.compareToIgnoreCase(b.name);
         });
 

@@ -176,6 +176,19 @@ public class EventInstanceResource {
                     .build();
         }
 
+        // Check if staff can be assigned (qualifications, holiday)
+        AvailableStaffDTO availability = assignmentEngine.evaluateStaff(ei).stream()
+                .filter(s -> s.id.equals(request.staffId))
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException("Staff availability could not be evaluated"));
+        
+        if (!availability.canAssign) {
+            String reasons = String.join(", ", availability.warningMessages);
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"Staff cannot be assigned: " + reasons + "\"}")
+                    .build();
+        }
+
         // Check if maximum staff limit is reached
         if (ei.assignments.size() >= ei.getEffectiveMaxStaff()) {
             return Response.status(Response.Status.BAD_REQUEST)
