@@ -46,7 +46,7 @@ export default function RegisterPage() {
           <Box sx={{ textAlign: 'center', mb: 3 }}>
             <Box
               component="img"
-              src="/OYCI-Logo.png"
+              src="/oyci_logo_new.png"
               alt="OYCI Logo"
               sx={{
                 width: 64,

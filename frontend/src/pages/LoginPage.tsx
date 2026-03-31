@@ -67,7 +67,7 @@ export default function LoginPage() {
           <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Box
               component="img"
-              src="/OYCI-Logo.png"
+              src="/oyci_logo_new.png"
               alt="OYCI Logo"
               sx={{
                 width: 72,

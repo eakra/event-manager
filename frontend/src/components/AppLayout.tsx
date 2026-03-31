@@ -65,7 +65,7 @@ export default function AppLayout() {
       <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
         <Box
           component="img"
-          src="/OYCI-Logo.png"
+          src="/oyci_logo_new.png"
           alt="OYCI Logo"
           sx={{
             width: 40,
