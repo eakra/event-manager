@@ -2,6 +2,7 @@ package com.booking.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "notifications")

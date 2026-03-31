@@ -12,7 +12,9 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import com.booking.entity.*;
 
 @Path("/api/notifications")
 @Produces(MediaType.APPLICATION_JSON)
